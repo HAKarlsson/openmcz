@@ -13,8 +13,11 @@
 
 #define temporal_fence() __asm__ volatile (".word 0x0000000B");
 
-#define wfi() \
-        __asm__ volatile ("wfi");
+#define wfi() ({ \
+                uint64_t __mie = csrr(mie); \
+                while (!(csrr(mip) & __mie)) \
+                __asm__ volatile ("wfi"); \
+                })
 
 #define PMP_NAPOT(base, size) \
         (((base) | ((size) / 2 - 1)) >> 2)

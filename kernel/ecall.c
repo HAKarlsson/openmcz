@@ -8,8 +8,7 @@ void ecall_yield()
 
 void ecall_wfi()
 {
-        while (csrr(mip) & 0x80)
-                wfi();
+        wfi();
 }
 
 void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)

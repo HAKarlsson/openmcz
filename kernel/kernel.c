@@ -23,8 +23,7 @@ void kernel_yield(void)
         uint64_t deadline = timeout_get();
         if (yield_time < deadline)
                 timeout_set(yield_time);
-        while (!(csrr(mip) & 0x80))
-                wfi();
+        wfi();
         kernel_sched();
 }
 
