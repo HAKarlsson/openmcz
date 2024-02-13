@@ -46,13 +46,13 @@ void kernel_sched(void)
 	current = sched->zone;
 	timeout_set(timeout_get() + sched->ticks);
 
-	csrw(pmpcfg0, current->pmpcfg);
-	csrw(pmpaddr0, current->pmpaddr[0]);
-	csrw(pmpaddr1, current->pmpaddr[1]);
-	csrw(pmpaddr2, current->pmpaddr[2]);
-	csrw(pmpaddr3, current->pmpaddr[3]);
-	csrw(pmpaddr4, current->pmpaddr[4]);
-	csrw(pmpaddr5, current->pmpaddr[5]);
-	csrw(pmpaddr6, current->pmpaddr[6]);
-	csrw(pmpaddr7, current->pmpaddr[7]);
+	csrw(pmpcfg0, *((uint64_t *)current->pmp.cfg));
+	csrw(pmpaddr0, current->pmp.addr[0]);
+	csrw(pmpaddr1, current->pmp.addr[1]);
+	csrw(pmpaddr2, current->pmp.addr[2]);
+	csrw(pmpaddr3, current->pmp.addr[3]);
+	csrw(pmpaddr4, current->pmp.addr[4]);
+	csrw(pmpaddr5, current->pmp.addr[5]);
+	csrw(pmpaddr6, current->pmp.addr[6]);
+	csrw(pmpaddr7, current->pmp.addr[7]);
 }
