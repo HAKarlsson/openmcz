@@ -13,7 +13,7 @@ void ecall_wfi()
 
 void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)
 {
-	if (ch > current->n_chan_send) {
+	if (ch >= current->n_chan_send) {
 		current->regs[10] = 0;
 		return;
 	}
@@ -32,7 +32,7 @@ void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)
 
 void ecall_recv(uint64_t ch)
 {
-	if (ch > current->n_chan_recv) {
+	if (ch >= current->n_chan_recv) {
 		current->regs[10] = 0;
 		return;
 	}
