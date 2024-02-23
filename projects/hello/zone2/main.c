@@ -1,11 +1,18 @@
-#include "uart.h"
-#include "openmz.h"
+#include "api/openmz.h"
+#include "io/uart.h"
 
-void setup(){
-        uart_puts("setup zone2");
+void setup()
+{
+	uart_puts("setup zone2");
+	ecall_wfi();
 }
 
-void loop() {
-        uart_puts("loop zone2");
-        ecall_yield();
+void loop()
+{
+        char data[16] = "world";
+        uart_puts(data);
+        ecall_send(0, data);
+        while (!ecall_recv(0, data))
+                ecall_wfi();
+        uart_puts(data);
 }

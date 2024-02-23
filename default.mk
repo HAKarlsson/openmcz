@@ -17,7 +17,8 @@ OBJCOPY=riscv64-unknown-elf-objcopy
 OBJDUMP=riscv64-unknown-elf-objdump
 
 CFLAGS:=-O2 -g -nostartfiles
-CFLAGS+=-march=rv64imac_zicsr -mabi=lp64 -mcmodel=medany
+CFLAGS+=-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
+CFLAGS+=-flto
 CFLAGS+=${INC}
 
 all: ${ELF} ${HEX} ${DA}

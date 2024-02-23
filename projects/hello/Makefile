@@ -1,12 +1,29 @@
-all:
-	${MAKE} -C kernel all
-	${MAKE} -C zone1 all
-	${MAKE} -C zone2 all
-	srec_cat build/kernel.hex -Intel build/zone1.hex -Intel build/zone2.hex -Intel -o build/merged.hex -Intel
 
-clean:
-	${MAKE} -C kernel clean
-	${MAKE} -C zone1 clean
-	${MAKE} -C zone2 clean
+SUBDIRS=kernel zone1 zone2
 
-.PHONY: all clean
+ALL=${addsuffix .all, ${SUBDIRS}}
+CLEAN=${addsuffix .clean, ${SUBDIRS}}
+HEX=${patsubst %,build/%.hex, ${SUBDIRS}}
+ELF=${patsubst %,build/%.elf, ${SUBDIRS}}
+MERGED=build/merged.hex
+
+all: ${MERGED}
+
+%.all: %
+	${MAKE} -C $<
+
+%.clean: %
+	${MAKE} -C $< clean
+
+build/%.hex: %.all
+build/%.elf: %.all
+build/%.da: %.all
+
+${MERGED}: ${HEX}
+	srec_cat ${patsubst %, % -Intel, ${HEX}} -o $@ -Intel
+
+${HEX}: build/%.hex: %.all
+
+clean: ${CLEAN}
+
+.PHONY: all ${SUBDIRS} clean
