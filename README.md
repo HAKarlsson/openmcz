@@ -1,6 +1,6 @@
 # OpenMCZ
 
-Project is very much WIP so many planned features and documentation is missing.
+Project is very much WIP so many planned features, documentation, and example projects are missing.
 
 # Compilation / Testing
 
