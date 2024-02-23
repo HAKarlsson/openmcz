@@ -13,40 +13,50 @@ void kernel_init(void)
 {
 	uart_puts("starting openmz");
 	csrw(mtvec, trap_entry);
-	csrw(mie, 0x80);
 	kernel_yield();
+}
+
+void kernel_wait(void)
+{
+        // Only enable timer interrupts.
+	csrw(mie, MIE_MTIE);
+
+        // If timeout, exit
+        if (csrr(mip) & MIP_MTIP)
+                return;
+
+	// Set new timeout time if is earlier.
+	uint64_t yield_time = time_get() + yield_buffer;
+	if (yield_time < timeout_get())
+		timeout_set(yield_time);
+
+	// Wait until timeout.
+	while (!(csrr(mip) & MIP_MTIP))
+		wfi();
+}
+
+static const sched_t *kernel_sched_next(void)
+{
+	static int i = 0;
+        return &schedule[i++ % ARRAY_SIZE(schedule)];
 }
 
 void kernel_yield(void)
 {
-	// When yield takes effect.
-	uint64_t yield_time = time_get() + yield_buffer;
-	// Original timeout.
-	uint64_t deadline = timeout_get();
-	// Only update timeout if yield time is later.
-	if (yield_time < deadline)
-		timeout_set(yield_time);
-	// Wait until timeout.
-	wfi();
-	kernel_sched();
-}
-
-void kernel_sched(void)
-{
-	// Current scheduling entry.
-	static int i = 0;
-
 	// Get the next scheduling entry.
-	const sched_t *sched = &schedule[(i++) % ARRAY_SIZE(schedule)];
+	const sched_t *sched = kernel_sched_next();
 
-	// fence.t
-	temporal_fence();
+        kernel_wait();
+        if (sched->temporal_fence)
+                temporal_fence();
 
-	// Set current process and timeout..
+
+	// Set current process and timeout.
 	current = sched->zone;
 	timeout_set(timeout_get() + sched->ticks);
 
-	csrw(pmpcfg0, *((uint64_t *)current->pmp.cfg));
+	// Set PMP configuration
+	csrw(pmpcfg0, current->pmp.cfg);
 	csrw(pmpaddr0, current->pmp.addr[0]);
 	csrw(pmpaddr1, current->pmp.addr[1]);
 	csrw(pmpaddr2, current->pmp.addr[2]);

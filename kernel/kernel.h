@@ -18,7 +18,7 @@ typedef struct regs {
 } regs_t;
 
 typedef struct pmp {
-	uint8_t cfg[8];
+	uint64_t cfg;
 	uint64_t addr[8];
 } pmp_t;
 
@@ -34,9 +34,10 @@ typedef struct zone {
 typedef struct sched {
 	zone_t *zone;
 	uint64_t ticks;
+        int temporal_fence;
 } sched_t;
 
-register zone_t *current __asm__("tp");
+volatile register zone_t *current __asm__("tp");
 
 void kernel_init(void);
 void kernel_yield(void);
