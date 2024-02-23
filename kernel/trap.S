@@ -97,15 +97,15 @@ trap_exception:
         j       exception_handler
 
 trap_interrupt:
-        call    kernel_sched
+        call    kernel_yield
 
 trap_exit:
-        csrw    mstatus,0x8
+        csrw    mstatus,0
         # Load the process context from stack.
         ld      t2,(8*0)(tp)    # Store PC
-        ld      t3,(8*4)(tp)    # Store TP
+        ld      t1,(8*4)(tp)
         csrw    mepc,t2
-        csrw    mscratch,t3
+        csrw    mscratch,t1
         ld      t6,(8*31)(tp)
         ld      t5,(8*30)(tp)
         ld      t4,(8*29)(tp)
@@ -134,12 +134,10 @@ trap_exit:
         ld      t1,(8*6)(tp)
         ld      t0,(8*5)(tp)
         #ld      tp,(8*4)(tp)
-        ld      ra,(8*1)(tp)
-        #ld      pc,(8*0)(tp)
-        csrw    mstatus,0
         ld      gp,(8*3)(tp)
         ld      sp,(8*2)(tp)
-        csrw    mscratch,tp
-        ld      tp,(8*4)(tp)
+        ld      ra,(8*1)(tp)
+        #ld      pc,(8*0)(tp)
+        csrrw    tp,mscratch,tp
         mret
 
