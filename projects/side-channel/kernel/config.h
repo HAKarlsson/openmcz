@@ -26,25 +26,7 @@
 
 /****** IPC CONFIGURATIONS ******/
 
-static uint64_t chan_buf1[32];
-static channel_t chan1 = {
-	.buf = chan_buf1,
-	.size = ARRAY_SIZE(chan_buf1),
-	.head = 0,
-	.tail = 0,
-};
-
-static uint64_t chan_buf2[32];
-static channel_t chan2 = {
-	.buf = chan_buf2,
-	.size = ARRAY_SIZE(chan_buf2),
-	.head = 0,
-	.tail = 0,
-};
-
 /****** ZONE CONFIGURATIONS ******/
-static channel_t *zone1_send_chan[] = { &chan1 };
-static channel_t *zone1_recv_chan[] = { &chan2 };
 static zone_t zone1 = {
         .regs = { 0x80010000 },
         .pmp = {
@@ -55,14 +37,12 @@ static zone_t zone1 = {
                 PMP_NAPOT(0x80030000, 0x10000),
                 },
         },
-        .chan_send = zone1_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone1_send_chan),
-        .chan_recv = zone1_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone1_recv_chan),
+        .chan_send = NULL,
+        .n_chan_send = 0,
+        .chan_recv = NULL,
+        .n_chan_recv = 0,
 };
 
-static channel_t *zone2_send_chan[] = { &chan2 };
-static channel_t *zone2_recv_chan[] = { &chan1 };
 static zone_t zone2 = {
         .regs = { 0x80020000 },
         .pmp = {
@@ -73,15 +53,15 @@ static zone_t zone2 = {
                 PMP_NAPOT(0x80030000, 0x10000),
                 },
         },
-        .chan_send = zone2_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone2_send_chan),
-        .chan_recv = zone2_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone2_recv_chan),
+        .chan_send = NULL,
+        .n_chan_send = 0,
+        .chan_recv = NULL,
+        .n_chan_recv = 0,
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{ &zone1, 500000, 1},
+	{&zone1,  500000, 1},
 	{ &zone2, 500000, 1},
 };
 

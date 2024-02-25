@@ -1,4 +1,4 @@
-
+export ROOT=${abspath ../../}
 SUBDIRS=kernel zone1 zone2
 
 ALL=${addsuffix .all, ${SUBDIRS}}

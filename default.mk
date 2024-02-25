@@ -12,14 +12,19 @@ OBJS ?=${patsubst %.S,${OBJDIR}/%.o,${filter %.S, ${SRCS}}} \
        ${patsubst %.c,${OBJDIR}/%.o,${filter %.c, ${SRCS}}}
 DEPS ?=${patsubst %.o,%.d,${OBJS}}
 
-CC=riscv64-unknown-elf-gcc
-OBJCOPY=riscv64-unknown-elf-objcopy
-OBJDUMP=riscv64-unknown-elf-objdump
+include ${ROOT}/tools.mk
+
+COMMON_INC=${ROOT}/common/inc
+COMMON_LIB=${ROOT}/common/lib
 
 CFLAGS:=-O2 -g -nostartfiles
 CFLAGS+=-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
-CFLAGS+=-flto
-CFLAGS+=${INC}
+CFLAGS+=-flto ${INC} -I${COMMON_INC}
+CFLAGS+=-c -MMD
+
+LDFLAGS =-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
+LDFLAGS+=-flto -nostdlib -T${LINKERSCRIPT}
+LDFLAGS+=-L${COMMON_LIB} -laltc
 
 all: ${ELF} ${HEX} ${DA}
 
@@ -30,13 +35,13 @@ ${BUILDDIR} ${OBJDIR}:
 	mkdir -p $@
 
 ${OBJDIR}/%.o: %.S | ${OBJDIR}
-	${CC} ${CFLAGS} -c -MMD -o $@ $<
+	${CC} $< -o $@ ${CFLAGS}
 
 ${OBJDIR}/%.o: %.c | ${OBJDIR}
-	${CC} ${CFLAGS} -c -MMD -o $@ $<
+	${CC} $< -o $@ ${CFLAGS}
 
 ${ELF}: ${OBJS} ${LINKERSCRIPT} | ${BUILDDIR}
-	${CC} ${CFLAGS} -T${LINKERSCRIPT} -o $@ ${OBJS}
+	${CC} -o $@ ${OBJS} ${LDFLAGS}
 
 ${HEX}: ${ELF} | ${BUILDDIR}
 	${OBJCOPY} -O ihex $< $@

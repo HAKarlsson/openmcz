@@ -8,10 +8,10 @@ void ecall_yield()
 
 void ecall_wfi()
 {
-        uint64_t mie = csrr(mie);
-        while (!(csrr(mip) & mie))
-                wfi();
-        kernel_yield();
+	uint64_t mie = csrr(mie);
+	while (!(csrr(mip) & mie))
+		wfi();
+	kernel_yield();
 }
 
 void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)

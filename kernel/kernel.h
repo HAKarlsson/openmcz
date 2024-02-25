@@ -34,7 +34,7 @@ typedef struct zone {
 typedef struct sched {
 	zone_t *zone;
 	uint64_t ticks;
-        int temporal_fence;
+	int temporal_fence;
 } sched_t;
 
 volatile register zone_t *current __asm__("tp");

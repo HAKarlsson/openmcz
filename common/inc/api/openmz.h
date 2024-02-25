@@ -26,7 +26,7 @@ static inline int ecall_send(uint64_t ch, uint64_t msg[2])
 	a1 = msg[0];
 	a2 = msg[1];
 	__asm__ volatile("ecall" : "+r"(a0) : "r"(t0), "r"(a1), "r"(a2));
-        return a0;
+	return a0;
 }
 
 static inline int ecall_recv(uint64_t ch, uint64_t msg[2])
@@ -40,5 +40,5 @@ static inline int ecall_recv(uint64_t ch, uint64_t msg[2])
 	__asm__ volatile("ecall" : "+r"(a0), "+r"(a1), "+r"(a2) : "r"(t0));
 	msg[0] = a1;
 	msg[1] = a2;
-        return a0;
+	return a0;
 }

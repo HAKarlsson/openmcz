@@ -1,3 +1,4 @@
+export ROOT=${abspath ../../}
 
 SUBDIRS=kernel zone1 zone2
 

@@ -1,8 +1,8 @@
 #include "kernel.h"
 
+#include "altc/altio.h"
 #include "macro.h"
 #include "time.h"
-#include "uart.h"
 
 // Kernel configuration
 #include "config.h"
@@ -11,19 +11,19 @@ extern void trap_entry(void);
 
 void kernel_init(void)
 {
-	uart_puts("starting openmz");
+	alt_puts("starting openmz");
 	csrw(mtvec, trap_entry);
 	kernel_yield();
 }
 
 void kernel_wait(void)
 {
-        // Only enable timer interrupts.
+	// Only enable timer interrupts.
 	csrw(mie, MIE_MTIE);
 
-        // If timeout, exit
-        if (csrr(mip) & MIP_MTIP)
-                return;
+	// If timeout, exit
+	if (csrr(mip) & MIP_MTIP)
+		return;
 
 	// Set new timeout time if is earlier.
 	uint64_t yield_time = time_get() + yield_buffer;
@@ -38,7 +38,7 @@ void kernel_wait(void)
 static const sched_t *kernel_sched_next(void)
 {
 	static int i = 0;
-        return &schedule[i++ % ARRAY_SIZE(schedule)];
+	return &schedule[i++ % ARRAY_SIZE(schedule)];
 }
 
 void kernel_yield(void)
@@ -46,10 +46,9 @@ void kernel_yield(void)
 	// Get the next scheduling entry.
 	const sched_t *sched = kernel_sched_next();
 
-        kernel_wait();
-        if (sched->temporal_fence)
-                temporal_fence();
-
+	kernel_wait();
+	if (sched->temporal_fence)
+		temporal_fence();
 
 	// Set current process and timeout.
 	current = sched->zone;

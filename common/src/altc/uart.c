@@ -1,4 +1,3 @@
-#pragma once
 #include <stdint.h>
 
 #define UART_BASE 0x10000000
@@ -17,34 +16,24 @@
 
 static inline void write_reg_u8(uintptr_t addr, uint8_t value)
 {
-    volatile uint8_t *loc_addr = (volatile uint8_t *)addr;
-    *loc_addr = value;
+	volatile uint8_t *loc_addr = (volatile uint8_t *)addr;
+	*loc_addr = value;
 }
 
 static inline uint8_t read_reg_u8(uintptr_t addr)
 {
-    return *(volatile uint8_t *)addr;
+	return *(volatile uint8_t *)addr;
 }
 
-
-static inline int uart_is_transmit_empty() 
+static inline int uart_is_transmit_empty()
 {
-        return read_reg_u8(UART_LINE_STATUS) & 0x20;
+	return read_reg_u8(UART_LINE_STATUS) & 0x20;
 }
 
-static void uart_putchar(char c)
+void uart_putchar(char c)
 {
-        while (uart_is_transmit_empty() == 0) {};
+	while (uart_is_transmit_empty() == 0) {
+	};
 
-        write_reg_u8(UART_THR, c);
-}
-
-static void uart_puts(char *s)
-{
-        while (*s != '\0') {
-                uart_putchar(*s);
-                s++;
-        }
-        uart_putchar('\r');
-        uart_putchar('\n');
+	write_reg_u8(UART_THR, c);
 }
