@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+
 static inline uint64_t read_cycle(void)
 {
 	uint64_t res;
