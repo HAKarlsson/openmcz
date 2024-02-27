@@ -2,15 +2,15 @@ export ROOT=${abspath ../../}
 
 SUBDIRS=kernel grey resize sobel ascii printer
 
-CLEAN=${addsuffix .clean, ${SUBDIRS}}
+CLEAN=${addsuffix .clean, ${SUBDIRS} bare-metal}
 MERGED=build/merged.hex
 
-all: ${MERGED}
+all: ${MERGED} bare-metal
 
 ${MERGED}: ${SUBDIRS}
 	srec_cat ${patsubst %, build/%.hex -Intel, $^} -o $@ -Intel
 
-${SUBDIRS}:
+${SUBDIRS} bare-metal:
 	${MAKE} -C $@ all
 
 ${CLEAN}:
@@ -18,4 +18,4 @@ ${CLEAN}:
 
 clean: ${CLEAN}
 
-.PHONY: all clean ${CLEAN} ${SUBDIRS}
+.PHONY: all clean ${CLEAN} ${SUBDIRS} bare-metal

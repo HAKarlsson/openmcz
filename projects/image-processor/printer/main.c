@@ -1,4 +1,5 @@
 #include "api/openmz.h"
+#include "api/util.h"
 #include "altc/altio.h"
 #include "../shared.h"
 
@@ -8,21 +9,12 @@ void setup()
 {
 }
 
-void printer(const char *in, int xsize, int ysize)
-{
-        char buf[128];
-	for (int y = 0; y < ysize; ++y) {
-                for (int x = 0; x < xsize; ++x) {
-                        buf[x] = *(in++);
-                }
-                buf[xsize] = '\0';
-                alt_puts(buf);
-        }
-        alt_puts("");
-}
 
 void loop()
 {
-        printer(shared->asciied, 62, 30);
+        uint64_t msg[2];
+        //printer(shared->asciied, 62, 30);
+        ecall_recv(0, msg);
+        alt_printf("cycles: %D\n", read_cycle() - msg[0]);
 	ecall_yield();
 }
