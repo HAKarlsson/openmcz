@@ -22,8 +22,7 @@
 		__val;                                           \
 	})
 
-//#define temporal_fence() __asm__ volatile(".word 0xFFFFF00B")
-#define temporal_fence() __asm__ volatile(".word 0x0000000B")
+#define temporal_fence() __asm__ volatile(".word 0x0B")
 
 #define mip() (csrr(mip) & csrr(mie))
 
