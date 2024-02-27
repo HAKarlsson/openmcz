@@ -46,11 +46,11 @@ static channel_t chan2 = {
 static channel_t *zone1_send_chan[] = { &chan1 };
 static channel_t *zone1_recv_chan[] = { &chan2 };
 static zone_t zone1 = {
-        .regs = { 0x80010000 },
+        .regs = { 0x80004000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80010000, 0x10000),
+                PMP_NAPOT(0x80004000, 0x4000),
                 PMP_NAPOT(0x10000000, 0x20),
                 },
         },
@@ -63,11 +63,11 @@ static zone_t zone1 = {
 static channel_t *zone2_send_chan[] = { &chan2 };
 static channel_t *zone2_recv_chan[] = { &chan1 };
 static zone_t zone2 = {
-        .regs = { 0x80020000 },
+        .regs = { 0x80008000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80020000, 0x10000),
+                PMP_NAPOT(0x80008000, 0x4000),
                 PMP_NAPOT(0x10000000, 0x20),
                 },
         },

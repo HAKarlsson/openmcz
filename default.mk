@@ -26,7 +26,10 @@ LDFLAGS =-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 LDFLAGS+=-flto -nostdlib -T${LINKERSCRIPT}
 LDFLAGS+=-L${COMMON_LIB} -laltc
 
-all: ${ELF} ${HEX} ${DA}
+all: elf hex da size
+elf: ${ELF}
+hex: ${HEX}
+da: ${DA}
 
 clean:
 	rm -f ${ELF} ${HEX} ${DA} ${OBJS} ${DEPS}
@@ -49,6 +52,9 @@ ${HEX}: ${ELF} | ${BUILDDIR}
 ${DA}: ${ELF} | ${BUILDDIR}
 	${OBJDUMP} -S $< > $@
 
+size: ${ELF}
+	${SIZE} $<
+
 -include ${DEPS}
 
-.PHONY: all clean
+.PHONY: all clean elf hex da size

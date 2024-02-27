@@ -1,5 +1,4 @@
 PROGRAM=kernel
-LINKERSCRIPT=${KERNEL}/default.ld
 KERNEL=${ROOT}/kernel
 
 vpath %.c ${KERNEL}

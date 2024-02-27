@@ -6,6 +6,7 @@
 
 // Kernel configuration
 #include "config.h"
+static int i = 0;
 
 extern void trap_entry(void);
 
@@ -13,6 +14,7 @@ void kernel_init(void)
 {
 	alt_puts("starting openmz");
 	csrw(mtvec, trap_entry);
+        i = 0;
 	kernel_yield();
 }
 
@@ -37,14 +39,14 @@ void kernel_wait(void)
 
 static const sched_t *kernel_sched_next(void)
 {
-	static int i = 0;
-	return &schedule[i++ % ARRAY_SIZE(schedule)];
+	return &schedule[i % ARRAY_SIZE(schedule)];
 }
 
 void kernel_yield(void)
 {
 	// Get the next scheduling entry.
 	const sched_t *sched = kernel_sched_next();
+        i++;
 
 	kernel_wait();
 	if (sched->temporal_fence)
