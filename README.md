@@ -24,7 +24,11 @@ sudo make install
 Then you can clone this repository and compile the hello project.
 ```bash
 git clone git@github.com:HAKarlsson/openmcz.git
-cd openmcz/projects/hello
+# Build libraries
+cd openmcz/commun
+make
+# Build project
+cd ../openmcz/projects/hello
 make
 ```
 
