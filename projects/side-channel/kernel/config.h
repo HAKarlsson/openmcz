@@ -28,11 +28,11 @@
 
 /****** ZONE CONFIGURATIONS ******/
 static zone_t zone1 = {
-        .regs = { 0x80010000 },
+        .regs = { 0x80004000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80010000, 0x10000),
+                PMP_NAPOT(0x80004000, 0x4000),
                 PMP_NAPOT(0x10000000, 0x20),
                 PMP_NAPOT(0x80030000, 0x10000),
                 },
@@ -48,7 +48,7 @@ static zone_t zone2 = {
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80020000, 0x10000),
+                PMP_NAPOT(0x80008000, 0x4000),
                 PMP_NAPOT(0x10000000, 0x20),
                 PMP_NAPOT(0x80030000, 0x10000),
                 },
