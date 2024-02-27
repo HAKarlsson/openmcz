@@ -1,7 +1,8 @@
 include ../tools.mk
 
-ALTC_SRCS := ${wildcard src/altc/*.c}
-ALTC_OBJS := ${patsubst src/%.c,obj/%.o, ${ALTC_SRCS}}
+ALTC_SRCS := ${wildcard src/altc/*.[cS]}
+ALTC_OBJS := ${patsubst src/%.c,obj/%.o, ${filter %.c, ${ALTC_SRCS}}} \
+	     ${patsubst src/%.S,obj/%.o, ${filter %.S, ${ALTC_SRCS}}}
 CFLAGS=-march=rv64imac -mabi=lp64 -mcmodel=medany
 CFLAGS+=-Iinc
 
@@ -14,6 +15,10 @@ lib/libaltc.a: ${ALTC_OBJS}
 	${AR} cr $@ $^
 
 obj/%.o: src/%.c
+	mkdir -p ${@D}
+	${CC} ${CFLAGS} -c -o $@ $<
+
+obj/%.o: src/%.S
 	mkdir -p ${@D}
 	${CC} ${CFLAGS} -c -o $@ $<
 
