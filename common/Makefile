@@ -6,9 +6,12 @@ ALTC_OBJS := ${patsubst src/%.c,obj/%.o, ${filter %.c, ${ALTC_SRCS}}} \
 CFLAGS=-march=rv64imac -mabi=lp64 -mcmodel=medany
 CFLAGS+=-Iinc
 
-all: lib/libaltc.a
+LIBS=lib/libaltc.a
+
+all: ${LIBS}
 
 clean:
+	rm -f ${ALTC_OBJS} ${LIBS}
 
 lib/libaltc.a: ${ALTC_OBJS}
 	mkdir -p ${@D}
