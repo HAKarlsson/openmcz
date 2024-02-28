@@ -18,11 +18,11 @@ void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)
 {
 	if (ch >= current->n_chan_send) {
 		current->regs.a0 = 0;
-                return;
+		return;
 	}
 
 	channel_t *chan = current->chan_send[ch];
-        if (chan->head - chan->tail == chan->size) {
+	if (chan->head - chan->tail == chan->size) {
 		current->regs.a0 = 0;
 	} else {
 		chan->buf[chan->head % chan->size] = msg0;
@@ -36,11 +36,11 @@ void ecall_recv(uint64_t ch)
 {
 	if (ch >= current->n_chan_recv) {
 		current->regs.a0 = 0;
-                return;
+		return;
 	}
 
 	channel_t *chan = current->chan_recv[ch];
-        if (chan->tail == chan->head) {
+	if (chan->tail == chan->head) {
 		current->regs.a0 = 0;
 		return;
 	} else {

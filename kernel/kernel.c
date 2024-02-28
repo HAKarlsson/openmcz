@@ -14,7 +14,7 @@ void kernel_init(void)
 {
 	alt_puts("starting openmz");
 	csrw(mtvec, trap_entry);
-        i = 0;
+	i = 0;
 	kernel_yield();
 }
 
@@ -46,7 +46,7 @@ void kernel_yield(void)
 {
 	// Get the next scheduling entry.
 	const sched_t *sched = kernel_sched_next();
-        i++;
+	i++;
 
 	kernel_wait();
 	if (sched->temporal_fence)

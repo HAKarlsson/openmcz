@@ -5,7 +5,6 @@ void setup()
 {
 }
 
-
 void loop()
 {
 	sobel(shared->sobeled, shared->resized, 64, 32);

@@ -1,6 +1,6 @@
+#include "../shared.h"
 #include "api/openmz.h"
 #include "api/util.h"
-#include "../shared.h"
 
 #include <stdint.h>
 
@@ -12,9 +12,9 @@ void setup()
 
 void loop()
 {
-        uint64_t msg[2];
+	uint64_t msg[2];
 	msg[0] = read_cycle();
-        ecall_send(0, msg);
-        grey(shared->greyed, image, 64, 64);
+	ecall_send(0, msg);
+	grey(shared->greyed, image, 64, 64);
 	ecall_yield();
 }

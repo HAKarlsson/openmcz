@@ -2,30 +2,30 @@
 
 #include <stdint.h>
 
-
 #define BUFF_SIZE 0x1000
+
 typedef struct shared {
-        char greyed[BUFF_SIZE];
-        char resized[BUFF_SIZE];
-        char sobeled[BUFF_SIZE];
-        char asciied[BUFF_SIZE];
-        uint64_t time;
+	char greyed[BUFF_SIZE];
+	char resized[BUFF_SIZE];
+	char sobeled[BUFF_SIZE];
+	char asciied[BUFF_SIZE];
+	uint64_t time;
 } shared_t;
 
-static shared_t * const shared = (shared_t*)0x80020000;
+static shared_t *const shared = (shared_t *)0x80020000;
 
 /**
  * Converts image in in to greyscale image.
  */
-static inline void grey(char *restrict out, const char *in, int xsize, int ysize)
+static inline void grey(char *restrict out, const char *in, int xsize,
+			int ysize)
 {
-
-        for (int i = 0; i < xsize * ysize * 3; i += 3) {
-                int red = in[i];
-                int green = in[i + 1];
-                int blue = in[i + 2];
-	        *(out++) = (red * 9 + green * 5 + blue * 2) / 16;
-        }
+	for (int i = 0; i < xsize * ysize * 3; i += 3) {
+		int red = in[i];
+		int green = in[i + 1];
+		int blue = in[i + 2];
+		*(out++) = (red * 9 + green * 5 + blue * 2) / 16;
+	}
 }
 
 /**
@@ -107,13 +107,14 @@ static void sobel(char *out, const char *in, int xsize, int ysize)
  */
 static void ascii(char *out, const char *in, int xsize, int ysize)
 {
-        static const char ascii_map[] = { ' ', '.', ':', '-', '=', '+', '/', 't',
-                'z', 'U', 'w', '*', '0', '#', '%', '@' };
+	static const char ascii_map[] = { ' ', '.', ':', '-', '=', '+',
+					  '/', 't', 'z', 'U', 'w', '*',
+					  '0', '#', '%', '@' };
 	for (int y = 0; y < ysize; ++y) {
-                for (int x = 0; x < xsize; ++x) {
-		        *(out++) = ascii_map[*(in++) / 16];
-                }
-                *(out++) = '\n';
+		for (int x = 0; x < xsize; ++x) {
+			*(out++) = ascii_map[*(in++) / 16];
+		}
+		*(out++) = '\n';
 	}
-        *(out++) = '\0';
+	*(out++) = '\0';
 }
