@@ -12,9 +12,7 @@ void setup()
 
 void loop()
 {
-	uint64_t msg[2];
-	msg[0] = read_cycle();
-	ecall_send(0, msg);
+	shared->time = read_cycle();
 	grey(shared->greyed, image, 64, 64);
 	ecall_yield();
 }
