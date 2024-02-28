@@ -2,7 +2,10 @@ PROJECTS=projects/hello projects/side-channel projects/image-processor projects/
 
 all: common ${PROJECTS}
 
-common ${PROJECTS}:
+common:
+	${MAKE} -C $@ all
+
+${PROJECTS}: common
 	${MAKE} -C $@ all
 
 clean:
@@ -10,4 +13,4 @@ clean:
 		${MAKE} -C $$i clean; \
 	done
 
-.PHONY: all ${PROJECTS} clean
+.PHONY: all common ${PROJECTS} clean

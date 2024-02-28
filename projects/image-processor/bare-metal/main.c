@@ -24,5 +24,5 @@ void loop()
         ascii(shared->asciied, shared->sobeled, 62, 30);
         uint64_t end = read_cycle();
         alt_printf("cycles: %D\n", end - start);
-        //printer(shared->asciied, 62, 30);
+        //alt_puts(shared->asciied);
 }

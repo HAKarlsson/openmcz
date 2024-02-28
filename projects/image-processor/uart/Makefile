@@ -1,4 +1,4 @@
-PROGRAM=printer
+PROGRAM=uart
 BUILDDIR?=../build
 
 SRCS=${wildcard *.[cS]}

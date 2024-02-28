@@ -85,22 +85,14 @@ static void sobel(char *out, const char *in, int xsize, int ysize)
 		}
 	}
 }
+
 static void ascii(char *out, const char *in, int xsize, int ysize)
 {
-	for (int i = 0; i < xsize * ysize; ++i) {
-		out[i] = ascii_map[in[i] / 16];
-	}
-}
-
-static void printer(const char *in, int xsize, int ysize)
-{
-        char buf[128];
 	for (int y = 0; y < ysize; ++y) {
                 for (int x = 0; x < xsize; ++x) {
-                        buf[x] = *(in++);
+		        *(out++) = ascii_map[*(in++) / 16];
                 }
-                buf[xsize] = '\0';
-                alt_puts(buf);
-        }
-        alt_puts("");
+                *(out++) = '\n';
+	}
+        *(out++) = '\0';
 }

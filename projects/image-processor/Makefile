@@ -1,6 +1,6 @@
 export ROOT=${abspath ../../}
 
-SUBDIRS=kernel grey resize sobel ascii printer
+SUBDIRS=kernel grey resize sobel ascii uart
 
 MERGED=build/merged.hex
 
