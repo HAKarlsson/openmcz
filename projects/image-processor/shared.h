@@ -2,8 +2,6 @@
 
 #include <stdint.h>
 
-static const char ascii_map[] = { ' ', '.', ':', '-', '=', '+', '/', 't',
-			'z', 'U', 'w', '*', '0', '#', '%', '@' };
 
 #define BUFF_SIZE 0x1000
 typedef struct shared {
@@ -16,6 +14,9 @@ typedef struct shared {
 
 static shared_t * const shared = (shared_t*)0x80020000;
 
+/**
+ * Converts image in in to greyscale image.
+ */
 static inline void grey(char *restrict out, const char *in, int xsize, int ysize)
 {
 
@@ -27,6 +28,9 @@ static inline void grey(char *restrict out, const char *in, int xsize, int ysize
         }
 }
 
+/**
+ * Halves the height of the image.
+ */
 static void resize(char *out, const char *in, int xsize, int ysize)
 {
 	for (int j = 0; j < ysize; j += 2) {
@@ -38,6 +42,10 @@ static void resize(char *out, const char *in, int xsize, int ysize)
 	}
 }
 
+/**
+ * Calculate the integer square root.
+ * Code retrieved from Wikipedia.
+ */
 static int isqrt(int s)
 {
 	// Zero yields zero
@@ -59,6 +67,10 @@ static int isqrt(int s)
 	return x0;
 }
 
+/**
+ * Applies the sobel operator to the image.
+ * This is an edge detection algorithm.
+ */
 static void sobel(char *out, const char *in, int xsize, int ysize)
 {
 	for (int y = 1; y < ysize - 1; y++) {
@@ -86,8 +98,17 @@ static void sobel(char *out, const char *in, int xsize, int ysize)
 	}
 }
 
+/**
+ * Outputs an ascii representation of an image to out.
+ *
+ * Output image size: xsize * ysize + ysize + 1.
+ *
+ * The output image includes newlines and NULL byte.
+ */
 static void ascii(char *out, const char *in, int xsize, int ysize)
 {
+        static const char ascii_map[] = { ' ', '.', ':', '-', '=', '+', '/', 't',
+                'z', 'U', 'w', '*', '0', '#', '%', '@' };
 	for (int y = 0; y < ysize; ++y) {
                 for (int x = 0; x < xsize; ++x) {
 		        *(out++) = ascii_map[*(in++) / 16];
