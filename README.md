@@ -4,9 +4,11 @@ Project is very much WIP so many planned features, documentation, and example pr
 
 # Compilation / Testing
 
-Currently, the kernel is pretty hardcoded to work with [PULP
-CVA6](http://github.com/pulp-platform/cva6) running on a Genesys2 FPGA. I can
-not really help with getting this version of CVA6 working.
+Currently, the kernel is hardcoded to work with [PULP
+CVA6](http://github.com/pulp-platform/cva6) running on a Genesys2 FPGA. There
+is an FPGA image of CVA6 in [fpga/genesys2/](fpga/genesys2/) that is compatible
+with the kernel.
+
 
 The example project [hello](projects/hello) should be runnable on CVA6.
 To compile the project, you should install the riscv-gnu-toolchain.
