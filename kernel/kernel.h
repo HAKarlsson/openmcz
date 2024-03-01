@@ -41,4 +41,3 @@ volatile register zone_t *current __asm__("tp");
 
 void kernel_init(void);
 void kernel_yield(void);
-void kernel_sched(void);

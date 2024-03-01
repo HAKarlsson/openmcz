@@ -1,4 +1,4 @@
-#include "macro.h"
+#include "csr.h"
 
 .globl _start
 .globl __stack_top
@@ -58,12 +58,10 @@ _start:
         la      t0,_bss
         la      t1,_end
         j       2f
-1:      sb      zero,0(t0)
-        addi    t0,t0,1
+1:      sd      zero,0(t0)
+        addi    t0,t0,8
 2:      bne     t0,t1,1b
 
-        li      t0,10
-        csrw    0x702,t0
 /* Enable hpmcounters for zones */
         csrw    mcounteren,(MCOUNTEREN_CY | MCOUNTEREN_TM)
         csrw    scounteren,(MCOUNTEREN_CY | MCOUNTEREN_TM)

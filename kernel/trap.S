@@ -1,3 +1,5 @@
+#include "csr.h"
+
 .globl trap_entry
 .globl trap_exit
 
@@ -7,10 +9,6 @@
 trap_entry:
         # Swap the user with kernel sp
         csrrw   tp,mscratch,tp
-        bnez    tp,1f
-        csrrw   tp,mscratch,tp
-        j       trap_interrupt
-1:
         # Save the process context to stack.
         #sd      pc,(8*0)(tp)
         sd      ra,(8*1)(tp)
@@ -100,11 +98,10 @@ trap_interrupt:
         call    kernel_yield
 
 trap_exit:
-        csrw    mstatus,0
         # Load the process context from stack.
-        ld      t2,(8*0)(tp)    # Store PC
-        ld      t1,(8*4)(tp)
-        csrw    mepc,t2
+        ld      t0,(8*0)(tp)    # Restore PC
+        ld      t1,(8*4)(tp)    # Restore TP
+        csrw    mepc,t0
         csrw    mscratch,t1
         ld      t6,(8*31)(tp)
         ld      t5,(8*30)(tp)
@@ -133,11 +130,9 @@ trap_exit:
         ld      t2,(8*7)(tp)
         ld      t1,(8*6)(tp)
         ld      t0,(8*5)(tp)
-        #ld      tp,(8*4)(tp)
+        ld      ra,(8*1)(tp)
         ld      gp,(8*3)(tp)
         ld      sp,(8*2)(tp)
-        ld      ra,(8*1)(tp)
-        #ld      pc,(8*0)(tp)
-        csrrw    tp,mscratch,tp
+        csrrw   tp,mscratch,tp
         mret
 

@@ -1,5 +1,7 @@
+#include "csr.h"
 #include "kernel.h"
 #include "macro.h"
+#include "wfi.h"
 
 void ecall_yield()
 {
@@ -8,8 +10,7 @@ void ecall_yield()
 
 void ecall_wfi()
 {
-	uint64_t mie = csrr(mie);
-	while (!(csrr(mip) & mie))
+	while (!(csrr_mip() & csrr_mie()))
 		wfi();
 	kernel_yield();
 }
