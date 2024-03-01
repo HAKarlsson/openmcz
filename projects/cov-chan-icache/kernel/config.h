@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "macro.h"
+#include "pmp.h"
 
 /**
  *
@@ -30,11 +31,10 @@
 static zone_t zone1 = {
         .regs = { 0x80004000 },
         .pmp = {
-                .cfg = 0x1b1b1f,
+                .cfg = 0x1b1f,
                 .addr = {
                 PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
-                PMP_NAPOT(0x80030000, 0x10000),
+                PMP_NAPOT(0x80020000, 0x10000),
                 },
         },
         .chan_send = NULL,
@@ -44,13 +44,13 @@ static zone_t zone1 = {
 };
 
 static zone_t zone2 = {
-        .regs = { 0x80020000 },
+        .regs = { 0x80008000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
                 PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
                 PMP_NAPOT(0x80030000, 0x10000),
+                PMP_NAPOT(0x10000000, 0x20),
                 },
         },
         .chan_send = NULL,
@@ -61,8 +61,8 @@ static zone_t zone2 = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  500000, 1},
-	{ &zone2, 500000, 1},
+	{&zone1,  10000000, 1},
+	{ &zone2, 10000000, 1},
 };
 
 const uint64_t yield_buffer = 10;

@@ -1,11 +1,7 @@
 #include "altc/altio.h"
 #include "api/openmz.h"
 
-#include <stdint.h>
-
-volatile uint64_t *const shared_buffer = (uint64_t *)0x80030000;
-
-volatile char c;
+volatile char *const shared_buffer = (char *)0x80030000;
 
 static inline uint64_t read_cycle(void)
 {
@@ -16,16 +12,20 @@ static inline uint64_t read_cycle(void)
 
 void setup()
 {
-	alt_puts("setup spy");
 }
 
 void loop()
 {
+	static uint64_t avg = 0;
+	uint64_t data[2];
 	ecall_wfi();
 	uint64_t start = read_cycle();
-	for (int i = 0; i < 128; ++i)
-		shared_buffer[128 + i] = shared_buffer[i];
+	ecall_send(0, data);
+	ecall_recv(0, data);
 	uint64_t end = read_cycle();
 
-	alt_printf("%D\n", (end - start) / 128);
+	uint64_t t = end - start;
+	avg = (avg * 15 + t) / 16;
+
+	alt_printf("%d %D\n", (t > avg), (end - start));
 }

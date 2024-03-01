@@ -1,4 +1,8 @@
-PROJECTS=projects/hello projects/side-channel projects/image-processor projects/predictability
+PROJECTS=projects/hello \
+	 projects/cov-chan-dcache \
+	 projects/cov-chan-icache \
+	 projects/image-processor \
+	 projects/predictability
 
 all: common ${PROJECTS}
 
