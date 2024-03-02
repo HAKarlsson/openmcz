@@ -12,7 +12,6 @@ void ecall_wfi()
 {
 	while (!(csrr_mip() & csrr_mie()))
 		wfi();
-	kernel_yield();
 }
 
 void ecall_send(uint64_t ch, uint64_t msg0, uint64_t msg1)

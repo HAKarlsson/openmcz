@@ -9,6 +9,7 @@
 trap_entry:
         # Swap the user with kernel sp
         csrrw   tp,mscratch,tp
+        beqz    tp,__hang
         # Save the process context to stack.
         #sd      pc,(8*0)(tp)
         sd      ra,(8*1)(tp)
@@ -136,3 +137,5 @@ trap_exit:
         csrrw   tp,mscratch,tp
         mret
 
+__hang:
+        j       __hang

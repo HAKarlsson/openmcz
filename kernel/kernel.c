@@ -15,17 +15,15 @@ extern void trap_entry(void);
 void kernel_init(void)
 {
 	alt_puts("starting openmz");
+        csrw_mstatus(0);
 	csrw_mtvec((uint64_t)trap_entry);
-	csrw_spad(1000);
+	csrw_spad(4000);
 	csrw_mie(MIE_MTIE);
-	timeout_set(time_get());
 	kernel_yield();
 }
 
 static void kernel_wait(void)
 {
-	if (csrr_mip() & MIP_MTIP)
-		return;
 	// Set new timeout time if is earlier.
 	uint64_t yield_time = time_get() + yield_buffer;
 	if (yield_time < timeout_get())
@@ -48,9 +46,8 @@ void kernel_yield(void)
 	const sched_t *sched = kernel_sched_next();
 
 	kernel_wait();
-	if (sched->temporal_fence) {
+	if (sched->temporal_fence)
 		fence_t();
-	}
 
 	// Set current process and timeout.
 	current = sched->zone;
