@@ -44,7 +44,7 @@ static zone_t grey = {
                 .addr = {
                 PMP_NAPOT(0x80004000, 0x4000),
                 PMP_NAPOT(0x80020000, 0x1000),
-                PMP_NAPOT(0x80040000, 0x8),
+                PMP_NAPOT(0x80024000, 0x8),
                 },
         },
         .chan_send = channels,
@@ -101,7 +101,7 @@ static zone_t ascii = {
         .n_chan_recv = 0,
 };
 
-static zone_t printer = {
+static zone_t uart = {
         .regs = { 0x80014000 },
         .pmp = {
                 .cfg = 0x1b1b1b1f,
@@ -120,11 +120,12 @@ static zone_t printer = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&grey,	 500000000, 1},
-	    { &resize,  500000000, 1},
-	{ &sobel,	  500000000, 1},
-	    { &ascii,   500000000, 1},
-	{ &printer, 500000000, 1},
+	{&grey,	 500000000, TRUE},
+	     { &resize, 500000000, TRUE},
+	{ &sobel,  500000000, TRUE},
+	     { &ascii,  500000000, TRUE},
+	{ &uart,	 500000000, TRUE},
 };
 
-const uint64_t yield_buffer = 10;
+const uint64_t yield_buffer = 16;
+const uint64_t spad = 4000;

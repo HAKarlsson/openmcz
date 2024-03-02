@@ -15,9 +15,9 @@ extern void trap_entry(void);
 void kernel_init(void)
 {
 	alt_puts("starting openmz");
-        csrw_mstatus(0);
+	csrw_mstatus(0);
 	csrw_mtvec((uint64_t)trap_entry);
-	csrw_spad(4000);
+	csrw_spad(spad);
 	csrw_mie(MIE_MTIE);
 	kernel_yield();
 }
@@ -37,7 +37,9 @@ static void kernel_wait(void)
 static const sched_t *kernel_sched_next(void)
 {
 	static uint64_t i = 0;
-	return &schedule[i++ % ARRAY_SIZE(schedule)];
+	if (i == ARRAY_SIZE(schedule))
+		i = 0;
+	return &schedule[i++];
 }
 
 void kernel_yield(void)

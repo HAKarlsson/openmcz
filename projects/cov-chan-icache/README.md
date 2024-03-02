@@ -5,8 +5,8 @@ zone 2 have distinct memory regions, and share no IPC communication channels.
 Zone 1 and zone 2 are scheduled round-robin. The covert channel uses the cache
 as follows:
 
- - Zone 1 writes to memory regions `0x80020000 - 0x80030000` every other round-robin cycle.
- - Zone 2 measures the time it takes to writs to memory regions `0x80030000 - 0x80040000`.
+ - Zone 1 writes to memory regions calls `ecall_send` and `ecall_recv` every other round-robin cycle.
+ - Zone 2 calls `fence.i`, then measures the time it takes to writs to execute `ecall_send` and `ecall_recv`.
 
 If there exists a covert channel, we expect that zone 2's measured time
 will have a periodic behaviour.
@@ -29,5 +29,5 @@ const sched_t schedule[] = {
 Testing results on Genesys2 with CVA6+temporal fence shows that:
 
 - If `Y=true`: The covert channel is absent.
-- If `X=true` and `Y=false`: The covert channel is absent.
-- If `X=false` and `Y=false`: The covert channel clearly exists.
+- If `X=true` and `Y=false`: The covert channel exists.
+- If `X=false` and `Y=false`: The covert channel exists.

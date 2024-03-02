@@ -24,7 +24,7 @@ void loop()
 	uint64_t end = read_cycle();
 
 	uint64_t t = end - start;
-	avg = (avg * 15 + t) / 16;
+	avg = (avg == 0) ? t : ((avg * 15 + t) / 16);
 
-	alt_printf("%d %D\n", (t > avg), (end - start));
+	alt_printf("%c %D\n", (t > avg) ? 'T' : 'F', (end - start));
 }

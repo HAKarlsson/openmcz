@@ -11,7 +11,9 @@ void setup()
 
 void loop()
 {
+	uint64_t end1 = read_cycle();
 	alt_puts(shared->asciied);
-	alt_printf("{cycles: %D}\n", read_cycle() - shared->time);
+	uint64_t end2 = read_cycle();
+	alt_printf("%D\t%D\n", end1 - shared->time, end2 - shared->time);
 	ecall_yield();
 }

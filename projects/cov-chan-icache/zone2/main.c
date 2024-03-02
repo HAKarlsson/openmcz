@@ -19,13 +19,15 @@ void loop()
 	static uint64_t avg = 0;
 	uint64_t data[2];
 	ecall_wfi();
+	__asm__ volatile("fence.i");
+
 	uint64_t start = read_cycle();
 	ecall_send(0, data);
 	ecall_recv(0, data);
 	uint64_t end = read_cycle();
 
 	uint64_t t = end - start;
-	avg = (avg * 15 + t) / 16;
+	avg = (avg == 0) ? t : ((avg * 15 + t) / 16);
 
-	alt_printf("%d %D\n", (t > avg), (end - start));
+	alt_printf("%c %D\n", (t > avg) ? 'T' : 'F', (end - start));
 }

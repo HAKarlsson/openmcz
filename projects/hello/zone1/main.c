@@ -10,9 +10,8 @@ void setup()
 void loop()
 {
 	char data[16] = "hello, ";
-	alt_puts(data);
 	ecall_send(0, data);
 	while (!ecall_recv(0, data))
 		ecall_wfi();
-	alt_puts(data);
+	alt_putstr(data);
 }

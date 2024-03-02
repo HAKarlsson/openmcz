@@ -18,7 +18,7 @@ void wait()
 {
 	uint64_t last_cycle = read_cycle();
 	uint64_t curr_cycle = read_cycle();
-	while ((curr_cycle - last_cycle) < 10) {
+	while ((curr_cycle - last_cycle) < 1000) {
 		last_cycle = curr_cycle;
 		curr_cycle = read_cycle();
 	}

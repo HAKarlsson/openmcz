@@ -59,8 +59,9 @@ static zone_t zone2 = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  1000000, FALSE},
-	{ &zone2, 1000000, FALSE},
+	{&zone1,  100000, FALSE},
+	{ &zone2, 100000, TRUE },
 };
 
-const uint64_t yield_buffer = 10;
+const uint64_t yield_buffer = 16;
+const uint64_t spad = 4000;
