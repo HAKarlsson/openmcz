@@ -26,5 +26,5 @@ void loop()
 	uint64_t end1 = read_mcycle();
 	alt_puts(shared->asciied);
 	uint64_t end2 = read_mcycle();
-	alt_printf("%D\t%D\n", end1 - start, end2 - start);
+	alt_printf("%D,%D", end1 - start, end2 - start);
 }

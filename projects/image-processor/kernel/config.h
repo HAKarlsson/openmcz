@@ -38,13 +38,13 @@ channel_t *channels[] = { &chan1 };
 
 /****** ZONE CONFIGURATIONS ******/
 static zone_t grey = {
-        .regs = { 0x80004000 },
+        .regs = { 0x10008000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x80020000, 0x1000),
-                PMP_NAPOT(0x80024000, 0x8),
+                PMP_NAPOT(0x10008000, 0x4000),
+                PMP_NAPOT(0x80000000, 0x1000),
+                PMP_NAPOT(0x80004000, 0x8),
                 },
         },
         .chan_send = channels,
@@ -54,13 +54,13 @@ static zone_t grey = {
 };
 
 static zone_t resize = {
-        .regs = { 0x80008000 },
+        .regs = { 0x10002000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x80020000, 0x1000),
-                PMP_NAPOT(0x80021000, 0x1000),
+                PMP_NAPOT(0x10002000, 0x2000),
+                PMP_NAPOT(0x80000000, 0x1000),
+                PMP_NAPOT(0x80001000, 0x1000),
                 },
         },
         .chan_send = NULL,
@@ -70,13 +70,13 @@ static zone_t resize = {
 };
 
 static zone_t sobel = {
-        .regs = { 0x8000C000 },
+        .regs = { 0x10004000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x8000C000, 0x4000),
-                PMP_NAPOT(0x80021000, 0x1000),
-                PMP_NAPOT(0x80022000, 0x1000),
+                PMP_NAPOT(0x10004000, 0x2000),
+                PMP_NAPOT(0x80001000, 0x1000),
+                PMP_NAPOT(0x80002000, 0x1000),
                 },
         },
         .chan_send = NULL,
@@ -86,13 +86,13 @@ static zone_t sobel = {
 };
 
 static zone_t ascii = {
-        .regs = { 0x80010000 },
+        .regs = { 0x10006000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80010000, 0x4000),
-                PMP_NAPOT(0x80022000, 0x1000),
-                PMP_NAPOT(0x80023000, 0x1000),
+                PMP_NAPOT(0x10006000, 0x2000),
+                PMP_NAPOT(0x80002000, 0x1000),
+                PMP_NAPOT(0x80003000, 0x1000),
                 },
         },
         .chan_send = NULL,
@@ -102,14 +102,14 @@ static zone_t ascii = {
 };
 
 static zone_t uart = {
-        .regs = { 0x80014000 },
+        .regs = { 0x1000C000 },
         .pmp = {
                 .cfg = 0x1b1b1b1f,
                 .addr = {
-                PMP_NAPOT(0x80014000, 0x4000),
-                PMP_NAPOT(0x80023000, 0x1000),
-                PMP_NAPOT(0x80024000, 0x8),
-                PMP_NAPOT(0x10000000, 0x20),
+                PMP_NAPOT(0x1000C000, 0x2000),
+                PMP_NAPOT(0x80003000, 0x1000),
+                PMP_NAPOT(0x80004000, 0x8),
+                PMP_NAPOT(0x03002000, 0x20),
                 },
         },
         .chan_send = NULL,
@@ -120,12 +120,12 @@ static zone_t uart = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&grey,	 500000000, TRUE},
-	     { &resize, 500000000, TRUE},
-	{ &sobel,  500000000, TRUE},
-	     { &ascii,  500000000, TRUE},
-	{ &uart,	 500000000, TRUE},
+	{&grey,    500000000, FALSE, NULL},
+	{ &resize, 500000000, FALSE, NULL},
+	{ &sobel,  500000000, FALSE, NULL},
+	{ &ascii,  500000000, FALSE, NULL},
+	{ &uart,   500000000, FALSE, NULL},
 };
 
-const uint64_t yield_buffer = 16;
-const uint64_t spad = 4000;
+const uint64_t yield_buffer = 8;
+const uint64_t cspad = 0;

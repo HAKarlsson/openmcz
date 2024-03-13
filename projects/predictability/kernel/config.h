@@ -38,11 +38,12 @@ static channel_t *channels[] = { &chan1 };
 
 /****** ZONE CONFIGURATIONS ******/
 static zone_t zone1 = {
-        .regs = { 0x80010000 },
+        .regs = { 0x10008000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80010000, 0x8000),
+                PMP_NAPOT(0x10008000, 0x8000),
+                PMP_NAPOT(0x80000000, 0x8000),
                 },
         },
         .chan_send = channels,
@@ -52,12 +53,12 @@ static zone_t zone1 = {
 };
 
 static zone_t zone2 = {
-        .regs = { 0x80004000 },
+        .regs = { 0x10002000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
+                PMP_NAPOT(0x10002000, 0x2000),
+                PMP_NAPOT(0x03002000, 0x20),
                 },
         },
         .chan_send = NULL,
@@ -67,12 +68,12 @@ static zone_t zone2 = {
 };
 
 static zone_t zone3 = {
-        .regs = { 0x80008000 },
+        .regs = { 0x10004000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
+                PMP_NAPOT(0x10004000, 0x2000),
+                PMP_NAPOT(0x03002000, 0x20),
                 },
         },
         .chan_send = NULL,
@@ -83,11 +84,10 @@ static zone_t zone3 = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  100000, TRUE },
-	{ &zone2, 800000, FALSE},
-	{ &zone3, 100000, TRUE },
+	{ &zone1, 10000, TRUE },
+	{ &zone2, 10000, FALSE },
+	{ &zone3, 10000, FALSE },
 };
 
-const uint64_t yield_buffer = 16;
-// const uint64_t spad = 4000;
-const uint64_t spad = 0;
+const uint64_t yield_buffer = 8;
+const uint64_t cspad = 1500;

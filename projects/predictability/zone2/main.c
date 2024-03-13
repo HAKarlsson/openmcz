@@ -12,8 +12,6 @@ void loop()
 {
 	uint64_t data[3];
 	data[2] = '\0';
-	while (ecall_recv(0, data)) {
-		alt_putstr((char *)data);
-	}
-	ecall_wfi();
+	if (ecall_recv(0, data))
+	        alt_putstr((char *)data);
 }

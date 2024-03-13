@@ -1,7 +1,7 @@
 #include "altc/altio.h"
 #include "api/openmz.h"
 
-volatile char *const shared_buffer = (char *)0x80030000;
+volatile long *const shared_buffer = (long *)0x80008000;
 
 static inline uint64_t read_cycle(void)
 {
@@ -16,15 +16,13 @@ void setup()
 
 void loop()
 {
-	static uint64_t avg = 0;
+        uint64_t start, end;
 	ecall_wfi();
-	uint64_t start = read_cycle();
-	for (int i = 0; i < 0x10000; i += 0x10)
-		shared_buffer[i]++;
-	uint64_t end = read_cycle();
 
-	uint64_t t = end - start;
-	avg = (avg == 0) ? t : ((avg * 15 + t) / 16);
+	start = read_cycle();
+	for (int i = 0; i < 0x8000; i += 0x100)
+		shared_buffer[i/sizeof(long)]++;
+	end = read_cycle();
 
-	alt_printf("%c %D\n", (t > avg) ? 'T' : 'F', (end - start));
+	alt_printf("%D\n", end - start);
 }

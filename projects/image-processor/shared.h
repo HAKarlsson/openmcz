@@ -12,7 +12,7 @@ typedef struct shared {
 	uint64_t time;
 } shared_t;
 
-static shared_t *const shared = (shared_t *)0x80020000;
+static shared_t *const shared = (shared_t *)0x80000000;
 
 /**
  * Converts image in in to greyscale image.

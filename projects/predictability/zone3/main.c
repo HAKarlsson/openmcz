@@ -6,14 +6,15 @@
 
 void setup()
 {
-	alt_puts("setup measurer");
 }
 
 void loop()
 {
-	static uint64_t last_time = 0;
-	uint64_t curr_time = read_cycle();
-	alt_printf("{%D}", (curr_time - last_time));
-	last_time = curr_time;
-	ecall_wfi();
+	uint64_t last_time = read_cycle();
+        while (1) {
+	        ecall_wfi();
+	        uint64_t curr_time = read_cycle();
+	        alt_printf("{%D}\n", (curr_time - last_time));
+	        last_time = curr_time;
+        }
 }

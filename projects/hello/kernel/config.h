@@ -52,7 +52,7 @@ static zone_t zone1 = {
                 .cfg = 0x1b1f,
                 .addr = {
                 PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
+                PMP_NAPOT(0x3002000, 0x20),
                 },
         },
         .chan_send = zone1_send_chan,
@@ -69,7 +69,7 @@ static zone_t zone2 = {
                 .cfg = 0x1b1f,
                 .addr = {
                 PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x10000000, 0x20),
+                PMP_NAPOT(0x3002000, 0x20),
                 },
         },
         .chan_send = zone2_send_chan,
@@ -80,9 +80,9 @@ static zone_t zone2 = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  100000, 1},
+	{&zone1,  100000, 0},
 	{ &zone2, 100000, 1},
 };
 
 const uint64_t yield_buffer = 16;
-const uint64_t spad = 4000;
+const uint64_t cspad = 4000;
