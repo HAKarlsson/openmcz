@@ -1,4 +1,4 @@
-PROGRAM=zone3
+PROGRAM=uart
 BUILDDIR?=../build
 
 SRCS=${wildcard *.[cS]}

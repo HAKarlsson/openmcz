@@ -1,0 +1,7 @@
+/home/hak/Projects/openmcz/kernel/ecall.c:11:6:ecall_wfi	0	static
+/home/hak/Projects/openmcz/kernel/ecall.c:17:6:ecall_send	0	static
+/home/hak/Projects/openmcz/kernel/ecall.c:35:6:ecall_recv	0	static
+/home/hak/Projects/openmcz/kernel/exception.c:3:6:exception_handler	0	static
+/home/hak/Projects/openmcz/kernel/kernel.c:41:6:kernel_yield	0	static
+/home/hak/Projects/openmcz/kernel/ecall.c:6:6:ecall_yield	0	static
+/home/hak/Projects/openmcz/kernel/kernel.c:14:6:kernel_init	0	static

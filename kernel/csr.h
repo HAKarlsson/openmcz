@@ -31,9 +31,9 @@ static inline void csrw_mie(uint64_t val)
 	__asm__ volatile("csrw mie,%0" ::"r"(val));
 }
 
-static inline void csrw_spad(uint64_t val)
+static inline void csrw_cspad(uint64_t val)
 {
-	__asm__ volatile("csrw 0x702,%0" ::"r"(val));
+	__asm__ volatile("csrw 0x7C3,%0" ::"r"(val));
 }
 
 static inline void csrw_mcounteren(uint64_t val)

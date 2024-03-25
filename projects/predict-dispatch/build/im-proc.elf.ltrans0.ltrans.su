@@ -1,0 +1,6 @@
+/home/hak/Projects/openmcz/common/inc/api/openmz.h:11:20:ecall_wfi	0	static
+comm.c:10:6:comm_flush.part.0	16	static
+comm.c:21:6:comm_putchar	0	static
+comm.c:35:6:comm_puts	16	static
+main.c:10:6:setup	0	static
+main.c:14:6:loop	16	static

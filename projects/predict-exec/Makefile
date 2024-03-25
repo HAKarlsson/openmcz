@@ -1,6 +1,6 @@
 export ROOT=${abspath ../../}
 
-SUBDIRS=kernel zone1 zone2 zone3
+SUBDIRS=kernel im-proc uart trasher
 
 MERGED=build/merged.hex
 

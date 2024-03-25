@@ -33,7 +33,7 @@ typedef struct zone {
 
 typedef struct sched {
 	zone_t *zone;
-	uint64_t ticks;
+	uint32_t ticks;
 	int temporal_fence;
 } sched_t;
 

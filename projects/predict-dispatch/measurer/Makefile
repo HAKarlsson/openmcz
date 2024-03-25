@@ -1,4 +1,4 @@
-PROGRAM=zone1
+PROGRAM=measurer
 BUILDDIR?=../build
 
 SRCS=${wildcard *.[cS]}

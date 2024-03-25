@@ -1,6 +1,5 @@
 #include "kernel.h"
 
-#include "altc/altio.h"
 #include "csr.h"
 #include "fence_t.h"
 #include "macro.h"
@@ -14,10 +13,9 @@ extern void trap_entry(void);
 
 void kernel_init(void)
 {
-	alt_puts("starting openmz");
 	csrw_mstatus(0);
 	csrw_mtvec((uint64_t)trap_entry);
-	csrw_spad(spad);
+	csrw_cspad(cspad);
 	csrw_mie(MIE_MTIE);
 	kernel_yield();
 }
@@ -37,9 +35,7 @@ static void kernel_wait(void)
 static const sched_t *kernel_sched_next(void)
 {
 	static uint64_t i = 0;
-	if (i == ARRAY_SIZE(schedule))
-		i = 0;
-	return &schedule[i++];
+	return &schedule[i++ % ARRAY_SIZE(schedule)];
 }
 
 void kernel_yield(void)
@@ -48,8 +44,6 @@ void kernel_yield(void)
 	const sched_t *sched = kernel_sched_next();
 
 	kernel_wait();
-	if (sched->temporal_fence)
-		fence_t();
 
 	// Set current process and timeout.
 	current = sched->zone;
@@ -65,4 +59,6 @@ void kernel_yield(void)
 	csrw_pmpaddr5(current->pmp.addr[5]);
 	csrw_pmpaddr6(current->pmp.addr[6]);
 	csrw_pmpaddr7(current->pmp.addr[7]);
+	if (sched->temporal_fence)
+		fence_t();
 }

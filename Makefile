@@ -2,7 +2,8 @@ PROJECTS=projects/hello \
 	 projects/cov-chan-dcache \
 	 projects/cov-chan-icache \
 	 projects/image-processor \
-	 projects/predictability
+	 projects/predict-dispatch \
+	 projects/predict-exec
 
 all: common ${PROJECTS}
 

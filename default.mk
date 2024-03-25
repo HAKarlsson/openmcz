@@ -17,13 +17,16 @@ include ${ROOT}/tools.mk
 COMMON_INC=${ROOT}/common/inc
 COMMON_LIB=${ROOT}/common/lib
 
-CFLAGS:=-O2 -g -nostartfiles
+CFLAGS:=-Os -g -nostartfiles
 CFLAGS+=-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
+CFLAGS+=-fdata-sections -ffunction-sections
 CFLAGS+=-flto ${INC} -I${COMMON_INC}
 CFLAGS+=-c -MMD
 
 LDFLAGS =-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 LDFLAGS+=-flto -nostdlib -T${LINKERSCRIPT}
+LDFLAGS+=-fstack-usage
+LDFLAGS+=-Wl,--gc-sections
 LDFLAGS+=-L${COMMON_LIB} -laltc
 
 all: elf hex da size

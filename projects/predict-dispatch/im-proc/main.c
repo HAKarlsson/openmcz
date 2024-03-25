@@ -3,14 +3,13 @@
 #include "api/util.h"
 #include "comm.h"
 
-volatile shared_t *const buf = (shared_t*)0x80000000;
+volatile shared_t *const buf = (shared_t *)0x80000000;
 
 extern char image[];
 
 void setup()
 {
 }
-
 
 void loop()
 {

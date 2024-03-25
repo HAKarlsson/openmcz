@@ -25,9 +25,7 @@
  * } sched_t;
  */
 
-/****** IPC CONFIGURATIONS ******/
-
-static uint64_t chan_buf1[2];
+static uint64_t chan_buf1[256];
 static channel_t chan1 = {
 	.buf = chan_buf1,
 	.size = ARRAY_SIZE(chan_buf1),
@@ -43,46 +41,55 @@ static channel_t chan2 = {
 	.tail = 0,
 };
 
-/****** ZONE CONFIGURATIONS ******/
-static channel_t *zone1_send_chan[] = { &chan1 };
-static channel_t *zone1_recv_chan[] = { &chan2 };
-static zone_t zone1 = {
-        .regs = { 0x80004000 },
-        .pmp = {
-                .cfg = 0x1b1f,
-                .addr = {
-                PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x3002000, 0x20),
-                },
-        },
-        .chan_send = zone1_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone1_send_chan),
-        .chan_recv = zone1_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone1_recv_chan),
-};
+static channel_t *channels[] = { &chan1, &chan2 };
 
-static channel_t *zone2_send_chan[] = { &chan2 };
-static channel_t *zone2_recv_chan[] = { &chan1 };
-static zone_t zone2 = {
+/****** ZONE CONFIGURATIONS ******/
+static zone_t im_proc = {
         .regs = { 0x80008000 },
         .pmp = {
-                .cfg = 0x1b1f,
+                .cfg = 0x1f,
                 .addr = {
-                PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x3002000, 0x20),
+                PMP_NAPOT(0x80008000, 0x8000),
                 },
         },
-        .chan_send = zone2_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone2_send_chan),
-        .chan_recv = zone2_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone2_recv_chan),
+        .chan_send = channels,
+        .n_chan_send = ARRAY_SIZE(channels),
+        .chan_recv = NULL,
+        .n_chan_recv = 0,
+};
+
+static zone_t uart = {
+        .regs = { 0x10002000 },
+        .pmp = {
+                .cfg = 0x1b1f,
+                .addr = {
+                PMP_NAPOT(0x10002000, 0x2000),
+                PMP_NAPOT(0x03002000, 0x20),
+                },
+        },
+        .chan_send = NULL,
+        .n_chan_send = 0,
+        .chan_recv = channels,
+        .n_chan_recv = ARRAY_SIZE(channels),
+};
+
+static zone_t trasher = {
+        .regs = { 0x10004000 },
+        .pmp = {
+                .cfg = 0x1b1f,
+                .addr = {
+                PMP_NAPOT(0x10004000, 0x2000),
+                PMP_NAPOT(0x80010000, 0x10000),
+                },
+        },
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  100000, 0},
-	{ &zone2, 100000, 1},
+	{ &im_proc,  10000, FALSE},
+	{ &uart,  100000000, FALSE},
+	{ &trasher,  1000000, FALSE},
 };
 
-const uint64_t yield_buffer = 16;
-const uint64_t cspad = 1000;
+const uint64_t yield_buffer = 8;
+const uint64_t cspad = 750;

@@ -41,6 +41,8 @@ void ecall_recv(uint64_t ch)
 
 	channel_t *chan = current->chan_recv[ch];
 	if (chan->tail == chan->head) {
+		chan->tail = 0;
+		chan->head = 0;
 		current->regs.a0 = 0;
 		return;
 	} else {

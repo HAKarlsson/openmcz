@@ -37,7 +37,7 @@ static channel_t chan1 = {
 static channel_t *channels[] = { &chan1 };
 
 /****** ZONE CONFIGURATIONS ******/
-static zone_t zone1 = {
+static zone_t im_proc = {
         .regs = { 0x10008000 },
         .pmp = {
                 .cfg = 0x1b1f,
@@ -52,7 +52,7 @@ static zone_t zone1 = {
         .n_chan_recv = 0,
 };
 
-static zone_t zone2 = {
+static zone_t uart = {
         .regs = { 0x10002000 },
         .pmp = {
                 .cfg = 0x1b1f,
@@ -67,7 +67,7 @@ static zone_t zone2 = {
         .n_chan_recv = ARRAY_SIZE(channels),
 };
 
-static zone_t zone3 = {
+static zone_t measurer = {
         .regs = { 0x10004000 },
         .pmp = {
                 .cfg = 0x1b1f,
@@ -82,12 +82,28 @@ static zone_t zone3 = {
         .n_chan_recv = 0,
 };
 
+static zone_t trasher = {
+        .regs = { 0x10006000 },
+        .pmp = {
+                .cfg = 0x1b1f,
+                .addr = {
+                PMP_NAPOT(0x10006000, 0x2000),
+                PMP_NAPOT(0x80008000, 0x8000),
+                },
+        },
+        .chan_send = NULL,
+        .n_chan_send = 0,
+        .chan_recv = NULL,
+        .n_chan_recv = 0,
+};
+
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{ &zone1, 10000, TRUE },
-	{ &zone2, 10000, FALSE },
-	{ &zone3, 10000, FALSE },
+	{&trasher,   10000, FALSE},
+	{ &im_proc,  10000, FALSE},
+	{ &uart,	 10000, FALSE},
+	{ &measurer, 10000, TRUE },
 };
 
 const uint64_t yield_buffer = 8;
-const uint64_t cspad = 1500;
+const uint64_t cspad = 750;
