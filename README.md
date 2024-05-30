@@ -4,10 +4,8 @@ Project is very much WIP so many planned features, documentation, and example pr
 
 # Compilation / Testing
 
-Currently, the kernel is hardcoded to work with [PULP
-CVA6](http://github.com/pulp-platform/cva6) running on a Genesys2 FPGA. There
-is an FPGA image of CVA6 in [fpga/genesys2/](fpga/genesys2/) that is compatible
-with the kernel.
+Currently, the kernel is hardcoded to work with [Pulp Platform's Cheshire SoC](http://github.com/pulp-platform/cheshire) running on a Genesys2 FPGA.
+FPGA images of Cheshire for the Genesys2 is available under `fpga/`.
 
 
 The example project [hello](projects/hello) should be runnable on CVA6.

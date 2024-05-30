@@ -22,6 +22,7 @@ CFLAGS+=-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 CFLAGS+=-fdata-sections -ffunction-sections
 CFLAGS+=-flto ${INC} -I${COMMON_INC}
 CFLAGS+=-c -MMD
+CFLAGS+=-specs=picolibc.specs
 
 LDFLAGS =-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 LDFLAGS+=-flto -nostdlib -T${LINKERSCRIPT}

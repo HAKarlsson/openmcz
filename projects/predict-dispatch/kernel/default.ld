@@ -4,6 +4,7 @@ ENTRY(_start)
 __global_pointer$ = MIN(_sdata + 0x800, MAX(_data + 0x800, _end - 0x800));
 
 MEMORY {
+	/*RAM (rwx) : ORIGIN = 0x80010000, LENGTH = 8K */
 	RAM (rwx) : ORIGIN = 0x10000000, LENGTH = 8K
 }
 

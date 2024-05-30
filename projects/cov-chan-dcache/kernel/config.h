@@ -26,7 +26,7 @@
  */
 
 /****** ZONE CONFIGURATIONS ******/
-static zone_t zone1 = {
+static zone_t trojan = {
         .regs = { 0x10004000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
@@ -42,7 +42,7 @@ static zone_t zone1 = {
         .n_chan_recv = 0,
 };
 
-static zone_t zone2 = {
+static zone_t spy = {
         .regs = { 0x10008000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
@@ -60,9 +60,9 @@ static zone_t zone2 = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{ &zone1, 2000, TRUE, &zone1 },
-	{ &zone2, 2000, TRUE, &zone2 },
+	{ &trojan, 1000000, FALSE, &trojan },
+	{ &spy, 2000000, FALSE, &spy },
 };
 
 const uint64_t yield_buffer = 8;
-const uint64_t cspad = 22000;
+const uint64_t cspad = 1000;

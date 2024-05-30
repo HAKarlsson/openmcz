@@ -1,6 +1,6 @@
 export ROOT=${abspath ../../}
 
-SUBDIRS=kernel zone1 zone2
+SUBDIRS=kernel trojan spy
 
 MERGED=build/merged.hex
 

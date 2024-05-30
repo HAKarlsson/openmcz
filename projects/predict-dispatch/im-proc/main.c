@@ -21,12 +21,4 @@ void loop()
 	comm_puts(buf->asciied);
 	ecall_wfi();
 	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
-	ecall_wfi();
 }

@@ -99,11 +99,11 @@ static zone_t trasher = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&trasher,   10000, FALSE},
-	{ &im_proc,  10000, FALSE},
-	{ &uart,	 10000, FALSE},
-	{ &measurer, 10000, TRUE },
+	{&trasher,   250000, FALSE},
+	{ &im_proc,  250000, FALSE},
+	{ &uart,     250000, FALSE},
+	{ &measurer, 250000, TRUE /* fence.t? */ },
 };
 
 const uint64_t yield_buffer = 8;
-const uint64_t cspad = 750;
+const uint64_t cspad = 500;

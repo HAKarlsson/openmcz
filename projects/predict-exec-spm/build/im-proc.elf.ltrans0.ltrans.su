@@ -1,0 +1,4 @@
+comm.c:10:6:comm_flush.part.0	0	static
+comm.c:21:6:comm_putchar	0	static
+main.c:11:6:setup	0	static
+main.c:15:6:loop	32	static

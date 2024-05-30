@@ -3,7 +3,8 @@ PROJECTS=projects/hello \
 	 projects/cov-chan-icache \
 	 projects/image-processor \
 	 projects/predict-dispatch \
-	 projects/predict-exec
+	 projects/predict-exec-spm \
+	 projects/predict-exec-ram
 
 all: common ${PROJECTS}
 

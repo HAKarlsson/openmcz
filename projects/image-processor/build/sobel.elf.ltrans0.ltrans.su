@@ -1,2 +1,2 @@
 main.c:4:6:setup	0	static
-main.c:8:6:loop	0	static
+main.c:8:6:loop	16	static
