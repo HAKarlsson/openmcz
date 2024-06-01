@@ -1,5 +1,6 @@
-#include "altc/altio.h"
-#include "api/openmz.h"
+#include "altio.h"
+#include "openmcz.h"
+#include <stdint.h>
 
 volatile long *const buffer = (long *)0x80008000;
 

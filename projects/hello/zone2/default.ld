@@ -28,4 +28,6 @@ SECTIONS
                 *(.bss .bss.*);
                 _end = ALIGN(8);
         } > RAM
+
+	__stack_top = ORIGIN(RAM) + LENGTH(RAM);
 }

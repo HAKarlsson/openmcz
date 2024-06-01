@@ -25,64 +25,48 @@
  * } sched_t;
  */
 
-/****** IPC CONFIGURATIONS ******/
-
-static uint64_t chan_buf1[2];
-static channel_t chan1 = {
-	.buf = chan_buf1,
-	.size = ARRAY_SIZE(chan_buf1),
-	.head = 0,
-	.tail = 0,
-};
-
-static uint64_t chan_buf2[2];
-static channel_t chan2 = {
-	.buf = chan_buf2,
-	.size = ARRAY_SIZE(chan_buf2),
-	.head = 0,
-	.tail = 0,
-};
-
 /****** ZONE CONFIGURATIONS ******/
-static channel_t *zone1_send_chan[] = { &chan1 };
-static channel_t *zone1_recv_chan[] = { &chan2 };
-static zone_t zone1 = {
+static thread_t zoneA = {
         .regs = { 0x80004000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
                 PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x3002000, 0x20),
+                PMP_NAPOT(0x03002000, 0x20),
                 },
         },
-        .chan_send = zone1_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone1_send_chan),
-        .chan_recv = zone1_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone1_recv_chan),
+	.queue_send = 0x1,
+	.queue_recv = 0x0,
 };
 
-static channel_t *zone2_send_chan[] = { &chan2 };
-static channel_t *zone2_recv_chan[] = { &chan1 };
-static zone_t zone2 = {
+static thread_t zoneB = {
         .regs = { 0x80008000 },
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
                 PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x3002000, 0x20),
+                PMP_NAPOT(0x03002000, 0x20),
                 },
         },
-        .chan_send = zone2_send_chan,
-        .n_chan_send = ARRAY_SIZE(zone2_send_chan),
-        .chan_recv = zone2_recv_chan,
-        .n_chan_recv = ARRAY_SIZE(zone2_recv_chan),
+	.queue_send = 0x0,
+	.queue_recv = 0x1,
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&zone1,  100000, 0},
-	{ &zone2, 100000, 1},
+    {&zoneA, 100000, 0},
+    {&zoneB, 100000, 0},
 };
 
-const uint64_t yield_buffer = 16;
+/* IPC configuration */
+static uint64_t queue1_buf[8];
+
+buffer_t buffers[0];
+queue_t queues[] = {
+	{
+		.buf = queue1_buf,
+		.size = 8,
+	},
+};
+
 const uint64_t cspad = 1000;

@@ -28,13 +28,13 @@
 /****** IPC CONFIGURATIONS ******/
 static uint64_t chan_buf1[2];
 static channel_t chan1 = {
-	.buf = chan_buf1,
-	.size = ARRAY_SIZE(chan_buf1),
-	.head = 0,
-	.tail = 0,
+    .buf = chan_buf1,
+    .size = ARRAY_SIZE(chan_buf1),
+    .head = 0,
+    .tail = 0,
 };
 
-channel_t *channels[] = { &chan1 };
+channel_t *channels[] = {&chan1};
 
 /****** ZONE CONFIGURATIONS ******/
 static zone_t grey = {
@@ -120,11 +120,11 @@ static zone_t uart = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{&grey,    500000000, FALSE, NULL},
-	{ &resize, 500000000, FALSE, NULL},
-	{ &sobel,  500000000, FALSE, NULL},
-	{ &ascii,  500000000, FALSE, NULL},
-	{ &uart,   500000000, FALSE, NULL},
+    {&grey,   500000000, TRUE},
+    {&resize, 500000000, TRUE},
+    {&sobel,  500000000, TRUE},
+    {&ascii,	500000000, TRUE},
+    {&uart,   500000000, TRUE},
 };
 
 const uint64_t yield_buffer = 8;

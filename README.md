@@ -16,17 +16,16 @@ The toolchain binaries should have the prefix `riscv64-unknown-elf-`.
 # Clone toolchain
 git clone git@github.com:riscv-collab/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
-./configure --enable-multilib --prefix=/opt/riscv
-sudo make install
-# Add /opt/riscv/bin to the PATH variable in .bashrc
+# Configure build script (prefix = where to install)
+./configure --enable-multilib --prefix=$HOME/.opt/riscv --with-cmodel=medany
+# Build toolchain
+make
+# Add $HOME/.opt/riscv/bin to the PATH variable in .bashrc
 ```
 
 Then you can clone this repository and compile the hello project.
 ```bash
 git clone git@github.com:HAKarlsson/openmcz.git
-# Build libraries
-cd openmcz/commun
-make
 # Build project
 cd ../openmcz/projects/hello
 make

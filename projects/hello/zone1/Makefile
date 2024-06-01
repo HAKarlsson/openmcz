@@ -1,6 +1,6 @@
 PROGRAM=zone1
 BUILDDIR?=../build
 
-SRCS=${wildcard *.[cS]}
+SRCS=head.S main.c newlib.c
 
 include ${ROOT}/default.mk

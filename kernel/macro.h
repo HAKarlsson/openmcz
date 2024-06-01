@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MACRO_H
+#define MACRO_H
 
 #define BIT(x) (1ul << (x))
 #define SETBIT(x, y) ((x) | BIT(y))
@@ -8,3 +9,5 @@
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define TRUE 1
 #define FALSE 0
+
+#endif /* MACRO_H */

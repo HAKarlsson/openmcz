@@ -7,6 +7,10 @@ MEMORY {
 	RAM (rwx) : ORIGIN = 0x80000000, LENGTH = 16K
 }
 
+__msip = 0x02040000;
+__mtimecmp = 0x02044000;
+__mtime = 0x0204bff8;
+
 SECTIONS
 {
         .text : {

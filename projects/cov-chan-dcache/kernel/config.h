@@ -26,7 +26,7 @@
  */
 
 /****** ZONE CONFIGURATIONS ******/
-static zone_t trojan = {
+static thread_t trojan = {
         .regs = { 0x10004000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
@@ -36,13 +36,9 @@ static zone_t trojan = {
                 PMP_NAPOT(0x03002000, 0x20),
                 },
         },
-        .chan_send = NULL,
-        .n_chan_send = 0,
-        .chan_recv = NULL,
-        .n_chan_recv = 0,
 };
 
-static zone_t spy = {
+static thread_t spy = {
         .regs = { 0x10008000 },
         .pmp = {
                 .cfg = 0x1b1b1f,
@@ -52,17 +48,16 @@ static zone_t spy = {
                 PMP_NAPOT(0x03002000, 0x20),
                 },
         },
-        .chan_send = NULL,
-        .n_chan_send = 0,
-        .chan_recv = NULL,
-        .n_chan_recv = 0,
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{ &trojan, 1000000, FALSE, &trojan },
-	{ &spy, 2000000, FALSE, &spy },
+    {&trojan, 100000, 0 },
+    {&spy, 100000, 1 },
 };
+
+buffer_t buffers[0];
+queue_t queues[0];
 
 const uint64_t yield_buffer = 8;
 const uint64_t cspad = 1000;

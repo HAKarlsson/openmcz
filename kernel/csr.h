@@ -1,20 +1,12 @@
-#pragma once
+#ifndef CSR_H
+#define CSR_H
 
-#define MSTATUS_MIE 0x8
+#include <stdint.h>
 
 #define MIE_MTIE 0x80
 #define MIP_MTIP 0x80
-
-#define MCOUNTEREN_CY 0x1
-#define MCOUNTEREN_TM 0x2
-#define MCOUNTEREN_IR 0x4
-
-#define SCOUNTEREN_CY 0x1
-#define SCOUNTEREN_TM 0x2
-#define SCOUNTEREN_IR 0x4
-
-#ifndef __ASSEMBLER__
-#include <stdint.h>
+#define MIE_MSIE 0x08
+#define MIP_MSIP 0x08
 
 static inline void csrw_mstatus(uint64_t val)
 {
@@ -29,6 +21,16 @@ static inline void csrw_mtvec(uint64_t val)
 static inline void csrw_mie(uint64_t val)
 {
 	__asm__ volatile("csrw mie,%0" ::"r"(val));
+}
+
+static inline void csrs_mie(uint64_t val)
+{
+	__asm__ volatile("csrs mie,%0" ::"r"(val));
+}
+
+static inline void csrc_mie(uint64_t val)
+{
+	__asm__ volatile("csrc mie,%0" ::"r"(val));
 }
 
 static inline void csrw_cspad(uint64_t val)
@@ -91,6 +93,20 @@ static inline void csrw_pmpaddr7(uint64_t val)
 	__asm__ volatile("csrw pmpaddr7,%0" ::"r"(val));
 }
 
+static inline uint64_t csrr_mcause(void)
+{
+	uint64_t val;
+	__asm__ volatile("csrr %0,mcause" : "=r"(val));
+	return val;
+}
+
+static inline uint64_t csrr_mhartid(void)
+{
+	uint64_t val;
+	__asm__ volatile("csrr %0,mhartid" : "=r"(val));
+	return val;
+}
+
 static inline uint64_t csrr_mie(void)
 {
 	uint64_t val;
@@ -104,4 +120,4 @@ static inline uint64_t csrr_mip(void)
 	__asm__ volatile("csrr %0,mip" : "=r"(val));
 	return val;
 }
-#endif
+#endif /* CSR_H */

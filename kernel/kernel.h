@@ -1,12 +1,24 @@
-#pragma once
+#ifndef KERNEL_H
+#define KERNEL_H
+
+#ifndef HART_COUNT
+#define HART_COUNT 1
+#endif /* HART_COUNT */
 
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct channel {
+typedef struct queue {
+	uint64_t size; 
+	uint64_t head;
+	uint64_t tail;
+	uint64_t *volatile buf;
+} queue_t;
+
+typedef struct buffer {
+	uint64_t size;
 	uint64_t *buf;
-	uint64_t size, head, tail;
-} channel_t;
+} buffer_t;
 
 typedef struct regs {
 	uint64_t pc, ra, sp, gp, tp;
@@ -22,22 +34,26 @@ typedef struct pmp {
 	uint64_t addr[8];
 } pmp_t;
 
-typedef struct zone {
+typedef struct thread {
 	regs_t regs;
 	pmp_t pmp;
-	channel_t **chan_send;
-	uint64_t n_chan_send;
-	channel_t **chan_recv;
-	uint64_t n_chan_recv;
-} zone_t;
+	uint64_t queue_send;
+	uint64_t queue_recv;
+	uint64_t buffer_write;
+	uint64_t buffer_read;
+} thread_t;
 
 typedef struct sched {
-	zone_t *zone;
-	uint32_t ticks;
+	thread_t *threads;
+	uint64_t ticks;
 	int temporal_fence;
 } sched_t;
 
-volatile register zone_t *current __asm__("tp");
-
 void kernel_init(void);
-void kernel_yield(void);
+thread_t *kernel_sched(void);
+
+extern queue_t queues[];
+extern buffer_t buffers[];
+extern sched_t sched[];
+
+#endif /* KERNEL_H */

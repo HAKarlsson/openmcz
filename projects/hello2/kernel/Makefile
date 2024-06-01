@@ -1,0 +1,3 @@
+BUILDDIR?=../build
+include ${ROOT}/kernel/kernel.mk
+CFLAGS+=-DNDEBUG

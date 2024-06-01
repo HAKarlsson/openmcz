@@ -4,7 +4,7 @@ ALTC_SRCS := ${wildcard src/altc/*.[cS]}
 ALTC_OBJS := ${patsubst src/%.c,obj/%.o, ${filter %.c, ${ALTC_SRCS}}} \
 	     ${patsubst src/%.S,obj/%.o, ${filter %.S, ${ALTC_SRCS}}}
 CFLAGS=-march=rv64imac -mabi=lp64 -mcmodel=medany
-CFLAGS+=-Iinc -specs=picolibc.specs
+CFLAGS+=-Iinc
 
 LIBS=lib/libaltc.a
 

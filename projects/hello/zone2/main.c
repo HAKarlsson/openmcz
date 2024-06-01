@@ -1,18 +1,18 @@
-#include "altc/altio.h"
-#include "api/openmz.h"
+#include "openmcz.h"
+
+#include <stdio.h>
 
 void setup()
 {
-	alt_puts("setup zone2");
+	printf("setup zone2\r\n");
 	ecall_wfi();
 }
 
 void loop()
 {
-	char data[16] = "world\n";
-	alt_puts(data);
-	ecall_send(0, data);
-	while (!ecall_recv(0, data))
-		ecall_wfi();
-	alt_putstr(data);
+	char data[9];
+	data[8] = '\0';
+	while (ecall_recv(0, data))
+		printf("%s", data);
+	ecall_yield();
 }

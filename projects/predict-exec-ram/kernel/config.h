@@ -27,21 +27,13 @@
 
 static uint64_t chan_buf1[256];
 static channel_t chan1 = {
-	.buf = chan_buf1,
-	.size = ARRAY_SIZE(chan_buf1),
-	.head = 0,
-	.tail = 0,
+    .buf = chan_buf1,
+    .size = ARRAY_SIZE(chan_buf1),
+    .head = 0,
+    .tail = 0,
 };
 
-static uint64_t chan_buf2[2];
-static channel_t chan2 = {
-	.buf = chan_buf2,
-	.size = ARRAY_SIZE(chan_buf2),
-	.head = 0,
-	.tail = 0,
-};
-
-static channel_t *channels[] = { &chan1, &chan2 };
+static channel_t *channels[] = {&chan1};
 
 /****** ZONE CONFIGURATIONS ******/
 static zone_t im_proc = {
@@ -86,9 +78,9 @@ static zone_t trasher = {
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-	{ &trasher,  1000000, FALSE},
-	{ &im_proc,  100000, FALSE},
-	{ &uart,  1000000, FALSE},
+    {&zone1, 100000, TRUE },
+    {&zone2, 800000, FALSE},
+    {&zone3, 100000, TRUE },
 };
 
 const uint64_t yield_buffer = 8;

@@ -2,7 +2,7 @@ export ROOT=${abspath ../../}
 
 SUBDIRS=kernel zone1 zone2
 
-MERGED=build/merged.hex
+MERGED=build/hello.hex
 
 all: ${MERGED}
 

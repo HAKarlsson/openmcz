@@ -107,9 +107,9 @@ static void sobel(char *out, const char *in, int xsize, int ysize)
  */
 static void ascii(char *out, const char *in, int xsize, int ysize)
 {
-	static const char ascii_map[] = { ' ', '.', ':', '-', '=', '+',
-					  '/', 't', 'z', 'U', 'w', '*',
-					  '0', '#', '%', '@' };
+	static const char ascii_map[] = {' ', '.', ':', '-', '=', '+',
+					 '/', 't', 'z', 'U', 'w', '*',
+					 '0', '#', '%', '@'};
 	for (int y = 0; y < ysize; ++y) {
 		for (int x = 0; x < xsize; ++x) {
 			*(out++) = ascii_map[*(in++) / 16];

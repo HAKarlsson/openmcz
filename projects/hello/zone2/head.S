@@ -22,9 +22,3 @@ _start:
 
         la      ra,loop
         tail    setup
-
-.section .bss.stack
-.balign 8
-__stack_bottom:
-        .zero 1024
-__stack_top:

@@ -1,118 +1,77 @@
 #include "altc/altio.h"
 
+#include <stdint.h>
 #include <stdarg.h>
 #include <stddef.h>
 
-#define ALT_PRINTF_BUF_SIZE 128
-
-static char *write_dec(char *restrict dst, const char *end,
-		       unsigned long long val)
+static void write_dec(uint64_t val)
 {
-	if (!val && dst != end) {
-		*(dst++) = '0';
-	} else if (dst != end) {
-		int i = 0;
-		char buf[24];
-		while (val) {
-			int tmp = val % 10;
-			buf[i++] = '0' + tmp;
-			val /= 10;
-		}
-		while (i > 0 && dst != end)
-			*(dst++) = buf[--i];
-	}
-	return dst;
+	char buf[24];
+	int i = 0;
+	do {
+		int tmp = val % 10;
+		buf[i++] = ('0' + tmp);
+		val /= 10;
+	} while (val);
+	while (i > 0)
+		alt_putchar(buf[--i]);
 }
 
-static char *write_hex(char *restrict dst, const char *end,
-		       unsigned long long val)
+static void write_hex(uint64_t val)
 {
-	if (!val && dst != end) {
-		*(dst++) = '0';
-	} else if (dst != end) {
-		int i = 0;
-		char buf[16];
-		while (val) {
-			int tmp = val & 0xF;
-			buf[i++] = tmp < 10 ? ('0' + tmp) : 'A' + (tmp - 10);
-			val >>= 4;
-		}
-		while (i > 0 && dst != end)
-			*(dst++) = buf[--i];
-	}
-	return dst;
+	char buf[16];
+	int i = 0;
+	do {
+		int tmp = val & 0xF;
+		buf[i++] = tmp < 10 ? ('0' + tmp) : 'A' + (tmp - 10);
+		val >>= 4;
+	} while (val);
+	while (i > 0)
+		alt_putchar(buf[--i]);
 }
 
-static char *write_str(char *restrict dst, const char *end, char *restrict src)
+static int strlen(const char *s)
 {
-	while (dst != end && *src != '\0')
-		*(dst++) = *(src++);
-	return dst;
+	int i = 0;
+	while (s[i] != '\0') i++;
+	return i;
 }
 
-static char *write_char(char *restrict dst, const char *end, char c)
+void alt_printf(const char *restrict fmt, ...)
 {
-	if (dst != end)
-		*(dst++) = c;
-	return dst;
-}
-
-int alt_vsnprintf(char *restrict str, size_t size, const char *restrict fmt,
-		  va_list ap)
-{
-	char *s = str;
-	const char *end = str + size - 1;
-	while (*fmt != '\0' && s != end) {
-		if (*(fmt++) != '%') {
-			s = write_char(s, end, *(fmt - 1));
+	va_list ap;
+	va_start(ap, fmt);
+	int len = strlen(fmt);
+	for (int i = 0; i < len; ++i) {
+		if (fmt[i] != '%') {
+			alt_putchar(fmt[i]);
 			continue;
 		}
-		switch (*(fmt++)) {
+		switch (fmt[++i]) {
 		case '%':
-			s = write_char(s, end, '%');
+			alt_putchar('%');
 			break;
 		case 'c':
-			s = write_char(s, end, va_arg(ap, int));
+			alt_putchar(va_arg(ap, uint32_t));
 			break;
 		case 's':
-			s = write_str(s, end, va_arg(ap, char *));
+			alt_putstr(va_arg(ap, char *));
 			break;
 		case 'x':
-			s = write_hex(s, end, va_arg(ap, unsigned int));
+			write_hex(va_arg(ap, uint32_t));
 			break;
 		case 'X':
-			s = write_hex(s, end, va_arg(ap, unsigned long));
+			write_hex(va_arg(ap, uint64_t));
 			break;
 		case 'd':
-			s = write_dec(s, end, va_arg(ap, unsigned int));
+			write_dec(va_arg(ap, uint32_t));
 			break;
 		case 'D':
-			s = write_dec(s, end, va_arg(ap, unsigned long));
+			write_dec(va_arg(ap, uint64_t));
 			break;
 		case '\0':
 			break;
 		}
 	}
-	*s = '\0';
-	return s - str;
-}
-
-int alt_snprintf(char *restrict str, size_t size, const char *restrict fmt, ...)
-{
-	va_list ap;
-	va_start(ap, fmt);
-	int len = alt_vsnprintf(str, size, fmt, ap);
 	va_end(ap);
-	return len;
-}
-
-int alt_printf(const char *restrict fmt, ...)
-{
-	char buf[ALT_PRINTF_BUF_SIZE];
-	va_list ap;
-	va_start(ap, fmt);
-	int len = alt_vsnprintf(buf, ALT_PRINTF_BUF_SIZE, fmt, ap);
-	va_end(ap);
-	alt_putstr(buf);
-	return len;
 }

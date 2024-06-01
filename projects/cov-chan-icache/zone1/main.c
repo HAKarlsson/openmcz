@@ -1,5 +1,5 @@
-#include "altc/altio.h"
-#include "api/openmz.h"
+#include "altio.h"
+#include "openmcz.h"
 
 static inline uint64_t read_cycle(void)
 {

@@ -1,4 +1,5 @@
 PROJECTS=projects/hello \
+	 projects/hello2 \
 	 projects/cov-chan-dcache \
 	 projects/cov-chan-icache \
 	 projects/image-processor \
@@ -6,12 +7,9 @@ PROJECTS=projects/hello \
 	 projects/predict-exec-spm \
 	 projects/predict-exec-ram
 
-all: common ${PROJECTS}
+all: ${PROJECTS}
 
-common:
-	${MAKE} -C $@ all
-
-${PROJECTS}: common
+${PROJECTS}:
 	${MAKE} -C $@ all
 
 clean:
