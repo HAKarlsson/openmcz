@@ -15,9 +15,9 @@ void loop()
 	static int i = 0;
 	char data[8];
 	snprintf(data, 8, "%6x  ", i++);
-	while (!ecall_send(0, data)) ecall_wfi();
+	while (!ecall_send(0, data)) ecall_yield();
 	strncpy(data, "hello ", 8);
-	while (!ecall_send(0, data)) ecall_wfi();
+	while (!ecall_send(0, data)) ecall_yield();
 	strncpy(data, "world\r\n", 8);
-	while (!ecall_send(0, data)) ecall_wfi();
+	while (!ecall_send(0, data)) ecall_yield();
 }

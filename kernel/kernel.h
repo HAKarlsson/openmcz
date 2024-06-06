@@ -54,6 +54,6 @@ thread_t *kernel_sched(void);
 
 extern queue_t queues[];
 extern buffer_t buffers[];
-extern sched_t sched[];
+extern const sched_t schedule[];
 
 #endif /* KERNEL_H */

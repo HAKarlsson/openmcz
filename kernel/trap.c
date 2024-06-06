@@ -38,11 +38,19 @@ enum exception_code {
 	STORE_PAGE_FAULT = 15,
 };
 
+static thread_t *illegal_instruction_handler(thread_t *thd, uint64_t mtval)
+{
+	/* TODO: Handle csr and mret */
+	return thd;
+}
+
 static thread_t *exception_handler(thread_t *thd, uint64_t mcause,
 				   uint64_t mtval)
 {
 	if (mcause == USER_ECALL)
 		return ecall_handler(thd);
+	if (mcause == ILLEGAL_INSTRUCTION)
+		return illegal_instruction_handler(thd, mtval);
 	return thd;
 }
 

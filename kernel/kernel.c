@@ -13,15 +13,42 @@
 
 #ifndef N_HARTS
 #define N_HARTS 1
-#endif
+#endif /* N_HARTS */
 
-void wait_for_msi(void)
+static thread_t *sched_barrier(void)
 {
+	static int i = 0;
+	uint64_t hartid = csrr_mhartid();
+
+	// Increment barrier counter.
+	int j = __atomic_fetch_add(&i, 1, __ATOMIC_SEQ_CST);
+
+	// Get the next schedule
+	const sched_t *sched = &schedule[(j / N_HARTS) % ARRAY_SIZE(schedule)];
+
+	// If last to enter barrier.
+	if (j % N_HARTS == N_HARTS - 1) {
+		uint64_t currtime = mtime_get();
+		uint64_t endtime = mtimecmp_get(hartid);
+		if (currtime < endtime)
+			endtime = currtime;
+		endtime += sched->ticks;
+		for (int i = 0; i < N_HARTS; ++i) {
+			mtimecmp_set(i, endtime);
+			msip_set(i);
+		}
+	}
+
+	// Wait for software interrupt
 	csrs_mie(MIE_MSIE);
-	while (!(csrr_mip() & MIP_MSIP))
+	do {
 		wfi();
-	msip_clear(csrr_mhartid());
+	} while (!(csrr_mip() & MIP_MSIP));
+	msip_clear(hartid);
 	csrc_mie(MIE_MSIE);
+
+	// Return thread to scheduler.
+	return &sched->threads[hartid];
 }
 
 void kernel_init(void)
@@ -31,37 +58,32 @@ void kernel_init(void)
 	csrw_cspad(cspad);
 	csrw_mie(MIE_MTIE);
 
+	// Hart 0 wakes other threads (and itself)
 	if (csrr_mhartid() == 0) {
-		uint64_t start_time = mtime_get() + 1000000;
 		for (int i = 0; i < N_HARTS; ++i) {
-			mtimecmp_set(i, start_time);
 			msip_set(i);
 		}
 	}
 
-	wait_for_msi();
-
-	while (!(csrr_mie() & MIP_MTIP))
+	// Wait for software interrupt
+	csrs_mie(MIE_MSIE);
+	do {
 		wfi();
-}
-
-const sched_t *get_next_sched(uint64_t hartid)
-{
-	static int i[N_HARTS] = {0};
-	return &schedule[(i[hartid]++) % ARRAY_SIZE(schedule)];
+	} while (!(csrr_mip() & MIP_MSIP));
+	msip_clear(csrr_mhartid());
+	csrc_mie(MIE_MSIE);
 }
 
 thread_t *kernel_sched(void)
 {
-	uint64_t hartid = csrr_mhartid();
-	// Get the next scheduling entry.
-	const sched_t *sched = get_next_sched(hartid);
-	
-	thread_t *thd = &sched->threads[hartid];
+	thread_t *thd;
+	do {
+		thd = sched_barrier();
+		// Exit if pmp.cfg is not set (Idle).
+	} while (!thd->pmp.cfg);
 
-	mtimecmp_set(hartid, mtimecmp_get(hartid) + sched->ticks);
 
-	// Set PMP configuration
+	/* Set PMP configuration */
 	csrw_pmpcfg0(thd->pmp.cfg);
 	csrw_pmpaddr0(thd->pmp.addr[0]);
 	csrw_pmpaddr1(thd->pmp.addr[1]);
@@ -71,8 +93,7 @@ thread_t *kernel_sched(void)
 	csrw_pmpaddr5(thd->pmp.addr[5]);
 	csrw_pmpaddr6(thd->pmp.addr[6]);
 	csrw_pmpaddr7(thd->pmp.addr[7]);
-
-	if (sched->temporal_fence)
-		fence_t();
+	/* Temporal fence */
+	fence_t();
 	return thd;
 }

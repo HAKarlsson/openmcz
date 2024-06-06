@@ -12,9 +12,9 @@ void loop()
 {
 	char data[9];
 	data[8] = '\0';
-	if (ecall_recv(0, data)) {
+	while (ecall_recv(0, data)) {
 		printf("%s", data);
 		fflush(0);
 	}
-	 ecall_wfi();
+	ecall_yield();
 }

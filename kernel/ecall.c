@@ -17,7 +17,6 @@ static thread_t *ecall_failure(thread_t *thd)
 
 static thread_t *ecall_yield(thread_t *thd)
 {
-	thd->regs.a0 = 1;
 	return kernel_sched();
 }
 
@@ -26,7 +25,7 @@ static thread_t *ecall_wfi(thread_t *thd)
 	thd->regs.a0 = 1;
 	while (!(csrr_mip() & csrr_mie()))
 		wfi();
-	return kernel_sched();
+	return thd;
 }
 
 static thread_t *ecall_send(thread_t *thd)

@@ -47,6 +47,7 @@ trap_entry:
 	sd	t1,(8*0)(a0)
 	sd	t2,(8*10)(a0)
 
+2:
 	/* Load kernel global pointer */
 	.option push
 	.option norelax
@@ -58,6 +59,10 @@ trap_entry:
 	csrr	a2,mtval
 	call	trap_handler
 
+	csrr	t0,mip
+	andi	t0,t0,0x80
+	li	a1,0x8000000000000007
+	bnez	t0,trap_handler
 trap_exit:
 	/* Write user pc to mscratch */
 	ld	t0,(8*0)(a0)

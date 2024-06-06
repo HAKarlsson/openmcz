@@ -28,45 +28,52 @@
 #define N_HARTS 2
 
 /****** ZONE CONFIGURATIONS ******/
-static thread_t zoneA[] = {
-	{
-        .regs = { 0x10004000 },
-        .pmp = {
-                .cfg = 0x1b1f,
-                .addr = {
-                PMP_NAPOT(0x10004000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
-                },
-        },
-	.queue_send = 0x1,
-	.queue_recv = 0x0,
-},
-{       .regs = { 0x10008000 },
-        .pmp = {
-                .cfg = 0x1b1f,
-                .addr = {
-                PMP_NAPOT(0x10008000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
-                },
-        },
-	.queue_send = 0x0,
-	.queue_recv = 0x1,
-}
+static thread_t zoneA[N_HARTS] = {
+	[0] = {       .regs = { 0x10008000 },
+		.pmp = {
+			.cfg = 0x1b1f,
+			.addr = {
+				PMP_NAPOT(0x10008000, 0x4000),
+				PMP_NAPOT(0x03002000, 0x20),
+			},
+		},
+		.queue_send = 0x0,
+		.queue_recv = 0x1,
+	},
+	[1] = {
+	}
+};
+
+static thread_t zoneB[N_HARTS] = {
+	[0] = {	},
+	[1] = {
+		.regs = { 0x10004000 },
+		.pmp = {
+			.cfg = 0x1b1f,
+			.addr = {
+				PMP_NAPOT(0x10004000, 0x4000),
+				PMP_NAPOT(0x03002000, 0x20),
+			},
+		},
+		.queue_send = 0x1,
+		.queue_recv = 0x0,
+	}
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-    {zoneA, 10000, 1},
+	{zoneA, 100000, 1},
+	{zoneB, 100000, 1},
 };
 
 /* IPC configuration */
-static uint64_t queue1_buf[2];
+static uint64_t queue1_buf[100];
 
 buffer_t buffers[0];
 queue_t queues[] = {
 	{
 		.buf = queue1_buf,
-		.size = 2,
+		.size = 100,
 	},
 };
 
