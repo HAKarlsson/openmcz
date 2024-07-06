@@ -10,9 +10,8 @@ void setup()
 
 void loop()
 {
-	char data[9];
-	data[8] = '\0';
+	uint64_t data[2] = {0};
 	while (ecall_recv(0, data))
-		printf("%s", data);
+		printf("%s", (char*)data);
 	ecall_yield();
 }

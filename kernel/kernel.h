@@ -12,7 +12,10 @@ typedef struct queue {
 	uint64_t size; 
 	uint64_t head;
 	uint64_t tail;
-	uint64_t *volatile buf;
+#ifdef SMP
+	uint64_t lock;
+#endif
+	uint64_t *buf;
 } queue_t;
 
 typedef struct buffer {

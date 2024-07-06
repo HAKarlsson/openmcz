@@ -1,4 +1,4 @@
-#include "altio.h"
+#include <altio.h>
 #include "openmcz.h"
 
 volatile long *const buffer = (long *)0x80000000;
@@ -25,7 +25,6 @@ unsigned int lfsr113_Bits (void)
 void loop()
 {
 	int rand = lfsr113_Bits();
-	alt_puts("Trojan: Sending %d");
 	if (rand & 1) {
 		for (int i = 0; i < 0x8000; i += 0x100)
 			buffer[i/sizeof(long)]++;

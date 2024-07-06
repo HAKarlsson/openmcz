@@ -1,6 +1,6 @@
 PROGRAM=zone1
 BUILDDIR?=../build
 
-SRCS=head.S main.c newlib.c
+SRCS=head.S main.c
 
-include ${ROOT}/default.mk
+include ${ROOT}/projects/default.mk

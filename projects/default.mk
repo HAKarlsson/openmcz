@@ -10,17 +10,14 @@ DEPS ?=${patsubst %.o,%.d,${OBJS}}
 
 include ${ROOT}/tools.mk
 
-COMMON_INC=${ROOT}/common/inc
-COMMON_LIB=${ROOT}/common/lib
-
 CFLAGS:=-Os -g
 CFLAGS+=-march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 CFLAGS+=${INC}
-CFLAGS+=-MMD
-CFLAGS+=-specs=nano.specs -nostartfiles
-CFLAGS+=-I${ROOT}/common/inc
-CFLAGS+=-L${ROOT}/common/lib -laltc
-CFLAGS+=-T${LINKERSCRIPT}
+CFLAGS+=-nostartfiles -specs=picolibc.specs 
+CFLAGS+=-I${ROOT}/libopenmcz/inc
+CFLAGS+=-L${ROOT}/libopenmcz/lib --oslib=openmcz
+CFLAGS+=-T${LINKERSCRIPT} -Wl,--gc-sections,-flto
+CFLAGS+=-MMD -flto
 
 all: elf hex da size
 elf: ${ELF}

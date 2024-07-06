@@ -17,8 +17,9 @@ CFLAGS:=-Os -g -nostartfiles
 CFLAGS+=-march=rv64imafdc_zicsr_zifencei -mabi=lp64d -mcmodel=medany
 CFLAGS+=-flto ${INC}
 CFLAGS+=-MMD
-CFLAGS+=-specs=nano.specs
-CFLAGS+=-I. -I${KERNEL} -I${ROOT}/libopenmcz
+CFLAGS+=-specs=picolibc.specs
+CFLAGS+=-I. -I${KERNEL} -I${ROOT}/libopenmcz/inc
+CFLAGS+=-L${ROOT}/libopenmcz/lib --oslib=openmcz
 CFLAGS+=-T${LINKERSCRIPT}
 CFLAGS+=-fstack-usage -Wstack-usage=0
 

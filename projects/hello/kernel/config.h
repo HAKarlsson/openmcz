@@ -2,28 +2,7 @@
 #include "macro.h"
 #include "pmp.h"
 
-/**
- *
- * typedef struct channel {
- *         uint64_t *buf;
- *         uint64_t size, head, tail;
- * } channel_t;
- *
- * typedef struct zone {
- *         uint64_t regs[32];
- *         uint64_t pmpcfg;
- *         uint64_t pmpaddr[8];
- *         channel_t *chan_send;
- *         uint64_t n_chan_send;
- *         channel_t *chan_recv;
- *         uint64_t n_chan_recv;
- * } zone_t;
- *
- * typedef struct sched {
- *         zone_t *zone;
- *         uint64_t ticks;
- * } sched_t;
- */
+#define N_HART 1
 
 /****** ZONE CONFIGURATIONS ******/
 static thread_t zoneA = {
@@ -31,8 +10,8 @@ static thread_t zoneA = {
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80004000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
+                	PMP_ADDR_NAPOT(0x80004000, 0x4000),
+                	PMP_ADDR_NAPOT(0x03002000, 0x20),
                 },
         },
 	.queue_send = 0x1,
@@ -44,8 +23,8 @@ static thread_t zoneB = {
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x80008000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
+                	PMP_ADDR_NAPOT(0x80008000, 0x4000),
+                	PMP_ADDR_NAPOT(0x03002000, 0x20),
                 },
         },
 	.queue_send = 0x0,

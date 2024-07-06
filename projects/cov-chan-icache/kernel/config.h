@@ -33,8 +33,8 @@ static thread_t zone1 = {
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x10004000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
+                PMP_ADDR_NAPOT(0x10004000, 0x4000),
+                PMP_ADDR_NAPOT(0x03002000, 0x20),
                 },
         },
 };
@@ -44,8 +44,8 @@ static thread_t zone2 = {
         .pmp = {
                 .cfg = 0x1b1f,
                 .addr = {
-                PMP_NAPOT(0x10008000, 0x4000),
-                PMP_NAPOT(0x03002000, 0x20),
+                PMP_ADDR_NAPOT(0x10008000, 0x4000),
+                PMP_ADDR_NAPOT(0x03002000, 0x20),
                 },
         },
 };

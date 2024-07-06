@@ -1,15 +1,11 @@
-PROJECTS=projects/hello \
-	 projects/hello2 \
-	 projects/cov-chan-dcache \
-	 projects/cov-chan-icache \
-	 projects/image-processor \
-	 projects/predict-dispatch \
-	 projects/predict-exec-spm \
-	 projects/predict-exec-ram
+PROJECTS=${wildcard projects/*/}
 
 all: ${PROJECTS}
 
-${PROJECTS}:
+libopenmcz:
+	${MAKE} -C $@ all
+
+${PROJECTS}: libopenmcz 
 	${MAKE} -C $@ all
 
 clean:
@@ -17,4 +13,4 @@ clean:
 		${MAKE} -C $$i clean; \
 	done
 
-.PHONY: all common ${PROJECTS} clean
+.PHONY: all libopenmcz ${PROJECTS} clean

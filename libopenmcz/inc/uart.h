@@ -1,0 +1,4 @@
+#ifndef LIBOPENMCZ_UART_H
+#define LIBOPENMCZ_UART_H
+
+#endif /* LIBOPENMCZ_UART_H */
