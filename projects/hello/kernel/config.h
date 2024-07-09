@@ -40,7 +40,7 @@ const sched_t schedule[] = {
 /* IPC configuration */
 static uint64_t queue1_buf[8];
 
-buffer_t buffers[0];
+buffer_t buffers[] = {};
 queue_t queues[] = {
 	{
 		.buf = queue1_buf,
@@ -48,4 +48,4 @@ queue_t queues[] = {
 	},
 };
 
-const uint64_t cspad = 1000;
+const uint64_t cspad = 10000;

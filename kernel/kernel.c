@@ -77,11 +77,7 @@ void kernel_init(void)
 thread_t *kernel_sched(void)
 {
 	thread_t *thd;
-	do {
-		thd = sched_barrier();
-		// Exit if pmp.cfg is not set (Idle).
-	} while (!thd->pmp.cfg);
-
+	thd = sched_barrier();
 
 	/* Set PMP configuration */
 	csrw_pmpcfg0(thd->pmp.cfg);

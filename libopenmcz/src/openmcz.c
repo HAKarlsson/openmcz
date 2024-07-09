@@ -39,8 +39,7 @@ int ecall_recv(uint64_t ch, uint64_t *msg)
 	a7 = 3;
 	a0 = ch;
 	__asm__ volatile("ecall" : "+r"(a0), "=r"(a1) : "r"(a7));
-	if (a0)
-		msg[0] = a1;
+	msg[0] = a1;
 	return a0;
 }
 

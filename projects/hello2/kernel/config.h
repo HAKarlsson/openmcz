@@ -73,7 +73,7 @@ buffer_t buffers[0];
 queue_t queues[] = {
 	{
 		.buf = queue1_buf,
-		.size = 100,
+		.size = 124,
 	},
 };
 

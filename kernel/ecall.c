@@ -13,7 +13,6 @@ static inline bool queue_acquire(queue_t *q)
 {
 #if N_HARTS > 1 
 	while (__atomic_fetch_or(&q->lock, 1, __ATOMIC_ACQUIRE)) {
-		// TODO: check for preemption, return false if
 		if (csrr_mip() & csrr_mie())
 			return false;
 	}
@@ -58,7 +57,7 @@ static thread_t *ecall_enq(thread_t *thd)
 	thd->regs.a0 = 0;
 
 	// Check permission.
-	if (!bit_is_set(thd->queue_recv, queue_id))
+	if (!bit_is_set(thd->queue_send, queue_id))
 		return thd;
 
 	// Attempt to acquire lock.
@@ -66,14 +65,14 @@ static thread_t *ecall_enq(thread_t *thd)
 		return thd;
 
 	// Check if full
-	if (queue->head == queue->tail + queue->size) {
+	if (queue->head - queue->tail == queue->size) {
 		queue_release(queue);
 		return thd;
 	}
 
 	// Success, enqueue data data.
 	thd->regs.a0 = 1;
-	queue->buf[queue->tail++ % queue->size] = value;
+	queue->buf[queue->head++ % queue->size] = value;
 	queue_release(queue);
 	return thd;
 }
