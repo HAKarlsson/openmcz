@@ -1,4 +1,4 @@
-#include "api/openmz.h"
+#include "openmcz.h"
 
 #include <stdint.h>
 
@@ -9,33 +9,33 @@ static int i;
 
 void comm_flush(void)
 {
-	if (i == 0)
-		return;
-	while (i < MSG_SIZE)
-		((char *)data)[i++] = 0;
-	while (!ecall_send(0, data))
-		ecall_wfi();
-	i = 0;
+    if (i == 0)
+        return;
+    while (i < MSG_SIZE)
+        ((char*)data)[i++] = 0;
+    while (!ecall_send(0, data))
+        ecall_wfi();
+    i = 0;
 }
 
 void comm_putchar(char c)
 {
-	((char *)data)[i++] = c;
-	if (i >= MSG_SIZE)
-		comm_flush();
+    ((char*)data)[i++] = c;
+    if (i >= MSG_SIZE)
+        comm_flush();
 }
 
-void comm_putstr(char *s)
+void comm_putstr(char* s)
 {
-	while (*s != '\0')
-		comm_putchar(*(s++));
-	comm_flush();
+    while (*s != '\0')
+        comm_putchar(*(s++));
+    comm_flush();
 }
 
-void comm_puts(char *s)
+void comm_puts(char* s)
 {
-	while (*s != '\0')
-		comm_putchar(*(s++));
-	comm_putchar('\n');
-	comm_flush();
+    while (*s != '\0')
+        comm_putchar(*(s++));
+    comm_putchar('\n');
+    comm_flush();
 }

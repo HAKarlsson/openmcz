@@ -4,7 +4,7 @@
 #ifdef ENABLE_TEMPORAL_FENCE
 static inline void fence_t(void)
 {
-	__asm__ volatile(".word 0x0B");
+    __asm__ volatile(".word 0x0B");
 }
 #else
 static inline void fence_t(void)

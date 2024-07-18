@@ -5,18 +5,21 @@
 
 void setup()
 {
-	printf("setup zone1\r\n");
-	ecall_wfi();
+    printf("setup zone1\r\n");
+    ecall_wfi();
 }
 
 void loop()
 {
-	static int i = 0;
-	uint64_t data[2];
-	snprintf((char*)data, 8, "%6x  ", i++);
-	while (!ecall_send(0, data[0])) ecall_yield();
-	strncpy((char*)data, "hello ", 8);
-	while (!ecall_send(0, data[0])) ecall_yield();
-	strncpy((char*)data, "world\r\n", 8);
-	while (!ecall_send(0, data[0])) ecall_yield();
+    static int i = 0;
+    uint64_t data[2];
+    snprintf((char*)data, 8, "%6x  ", i++);
+    while (!ecall_send(0, data[0]))
+        ecall_yield();
+    strncpy((char*)data, "hello ", 8);
+    while (!ecall_send(0, data[0]))
+        ecall_yield();
+    strncpy((char*)data, "world\r\n", 8);
+    while (!ecall_send(0, data[0]))
+        ecall_yield();
 }

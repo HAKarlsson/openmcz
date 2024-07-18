@@ -3,6 +3,10 @@ ENTRY(_start)
 
 __global_pointer$ = MIN(_sdata + 0x800, MAX(_data + 0x800, _end - 0x800));
 
+__mtime = 0x0204bff8;
+__mtimecmp = 0x02044000;
+__msip = 0x02040000;
+
 MEMORY {
 	/*RAM (rwx) : ORIGIN = 0x80010000, LENGTH = 8K */
 	RAM (rwx) : ORIGIN = 0x10000000, LENGTH = 8K

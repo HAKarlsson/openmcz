@@ -1,5 +1,5 @@
 #include "../shared.h"
-#include "api/openmz.h"
+#include "openmcz.h"
 
 void setup()
 {
@@ -7,6 +7,6 @@ void setup()
 
 void loop()
 {
-	sobel(shared->sobeled, shared->resized, 64, 32);
-	ecall_yield();
+    sobel(shared->sobeled, shared->resized, 64, 32);
+    ecall_yield();
 }

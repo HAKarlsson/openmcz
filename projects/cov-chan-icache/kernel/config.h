@@ -29,31 +29,31 @@
 
 /****** ZONE CONFIGURATIONS ******/
 static thread_t zone1 = {
-        .regs = { 0x10004000 },
-        .pmp = {
-                .cfg = 0x1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10004000, 0x4000),
-                PMP_ADDR_NAPOT(0x03002000, 0x20),
-                },
+    .regs = { 0x10004000 },
+    .pmp = {
+        .cfg = 0x1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10004000, 0x4000),
+            PMP_ADDR_NAPOT(0x03002000, 0x20),
         },
+    },
 };
 
 static thread_t zone2 = {
-        .regs = { 0x10008000 },
-        .pmp = {
-                .cfg = 0x1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10008000, 0x4000),
-                PMP_ADDR_NAPOT(0x03002000, 0x20),
-                },
+    .regs = { 0x10008000 },
+    .pmp = {
+        .cfg = 0x1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10008000, 0x4000),
+            PMP_ADDR_NAPOT(0x03002000, 0x20),
         },
+    },
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-    {&zone1, 100000, FALSE},
-    {&zone2, 100000, FALSE},
+    { &zone1, 100000, FALSE },
+    { &zone2, 100000, FALSE },
 };
 
 buffer_t buffers[0];

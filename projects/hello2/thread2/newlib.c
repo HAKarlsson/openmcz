@@ -4,10 +4,10 @@
 
 static void uart_putc(char c)
 {
-	volatile char* thr = (char*)UART_BASE;
-	volatile char* line_status = (char*)(UART_BASE + 20);
-	while (!(*line_status & 0x20)) {}
-	*thr = c;
+    volatile char* thr = (char*)UART_BASE;
+    volatile char* line_status = (char*)(UART_BASE + 20);
+    while (!(*line_status & 0x20)) { }
+    *thr = c;
 }
 
 int _fstat(int file, struct stat* st)
@@ -33,10 +33,10 @@ int _open(const char* name, int flags, int mode)
 
 int _write(int file, char* c, int len)
 {
-	for (int i = 0; i < len; ++i) {
-		uart_putc(c[i]);
-	}
-	return len;
+    for (int i = 0; i < len; ++i) {
+        uart_putc(c[i]);
+    }
+    return len;
 }
 
 int _read(int file, char* c, int len)

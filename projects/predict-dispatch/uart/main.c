@@ -1,17 +1,17 @@
-#include "altc/altio.h"
-#include "api/openmz.h"
+#include "altio.h"
+#include "openmcz.h"
 
 #include <stdint.h>
 
 void setup()
 {
-	alt_puts("setup driver");
+    alt_puts("setup driver");
 }
 
 void loop()
 {
-	uint64_t data[3];
-	data[2] = '\0';
-	if (ecall_recv(0, data))
-		alt_putstr((char *)data);
+    uint64_t data[2];
+    data[1] = '\0';
+    if (ecall_recv(0, data))
+        alt_printf("%s", (char*)data);
 }

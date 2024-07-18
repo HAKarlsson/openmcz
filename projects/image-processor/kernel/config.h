@@ -27,78 +27,77 @@
 
 /****** ZONE CONFIGURATIONS ******/
 static thread_t grey = {
-        .regs = { 0x10008000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10008000, 0x4000),
-                PMP_ADDR_NAPOT(0x80000000, 0x1000),
-                PMP_ADDR_NAPOT(0x80004000, 0x8),
-                },
+    .regs = { 0x10008000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10008000, 0x4000),
+            PMP_ADDR_NAPOT(0x80000000, 0x1000),
+            PMP_ADDR_NAPOT(0x80004000, 0x8),
         },
+    },
 };
 
 static thread_t resize = {
-        .regs = { 0x10002000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10002000, 0x2000),
-                PMP_ADDR_NAPOT(0x80000000, 0x1000),
-                PMP_ADDR_NAPOT(0x80001000, 0x1000),
-                },
+    .regs = { 0x10002000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10002000, 0x2000),
+            PMP_ADDR_NAPOT(0x80000000, 0x1000),
+            PMP_ADDR_NAPOT(0x80001000, 0x1000),
         },
+    },
 };
 
 static thread_t sobel = {
-        .regs = { 0x10004000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10004000, 0x2000),
-                PMP_ADDR_NAPOT(0x80001000, 0x1000),
-                PMP_ADDR_NAPOT(0x80002000, 0x1000),
-                },
+    .regs = { 0x10004000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10004000, 0x2000),
+            PMP_ADDR_NAPOT(0x80001000, 0x1000),
+            PMP_ADDR_NAPOT(0x80002000, 0x1000),
         },
+    },
 };
 
 static thread_t ascii = {
-        .regs = { 0x10006000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10006000, 0x2000),
-                PMP_ADDR_NAPOT(0x80002000, 0x1000),
-                PMP_ADDR_NAPOT(0x80003000, 0x1000),
-                },
+    .regs = { 0x10006000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10006000, 0x2000),
+            PMP_ADDR_NAPOT(0x80002000, 0x1000),
+            PMP_ADDR_NAPOT(0x80003000, 0x1000),
         },
+    },
 };
 
 static thread_t uart = {
-        .regs = { 0x1000C000 },
-        .pmp = {
-                .cfg = 0x1b1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x1000C000, 0x2000),
-                PMP_ADDR_NAPOT(0x80003000, 0x1000),
-                PMP_ADDR_NAPOT(0x80004000, 0x8),
-                PMP_ADDR_NAPOT(0x03002000, 0x20),
-                },
+    .regs = { 0x1000C000 },
+    .pmp = {
+        .cfg = 0x1b1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x1000C000, 0x2000),
+            PMP_ADDR_NAPOT(0x80003000, 0x1000),
+            PMP_ADDR_NAPOT(0x80004000, 0x8),
+            PMP_ADDR_NAPOT(0x03002000, 0x20),
         },
+    },
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-    {&grey,   500000000, TRUE},
-    {&resize, 500000000, TRUE},
-    {&sobel,  500000000, TRUE},
-    {&ascii,	500000000, TRUE},
-    {&uart,   500000000, TRUE},
+    { &grey, 500000000, TRUE },
+    { &resize, 500000000, TRUE },
+    { &sobel, 500000000, TRUE },
+    { &ascii, 500000000, TRUE },
+    { &uart, 500000000, TRUE },
 };
 
 buffer_t buffers[] = {};
 queue_t queues[] = {};
-
 
 const uint64_t yield_buffer = 8;
 const uint64_t cspad = 0;

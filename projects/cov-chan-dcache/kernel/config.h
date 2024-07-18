@@ -27,33 +27,33 @@
 
 /****** ZONE CONFIGURATIONS ******/
 static thread_t trojan = {
-        .regs = { 0x10004000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10004000, 0x4000),
-                PMP_ADDR_NAPOT(0x80000000, 0x8000),
-                PMP_ADDR_NAPOT(0x03002000, 0x20),
-                },
+    .regs = { 0x10004000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10004000, 0x4000),
+            PMP_ADDR_NAPOT(0x80000000, 0x8000),
+            PMP_ADDR_NAPOT(0x03002000, 0x20),
         },
+    },
 };
 
 static thread_t spy = {
-        .regs = { 0x10008000 },
-        .pmp = {
-                .cfg = 0x1b1b1f,
-                .addr = {
-                PMP_ADDR_NAPOT(0x10008000, 0x4000),
-                PMP_ADDR_NAPOT(0x80008000, 0x8000),
-                PMP_ADDR_NAPOT(0x03002000, 0x20),
-                },
+    .regs = { 0x10008000 },
+    .pmp = {
+        .cfg = 0x1b1b1f,
+        .addr = {
+            PMP_ADDR_NAPOT(0x10008000, 0x4000),
+            PMP_ADDR_NAPOT(0x80008000, 0x8000),
+            PMP_ADDR_NAPOT(0x03002000, 0x20),
         },
+    },
 };
 
 /****** SCHEDULER CONFIGURATIONS ******/
 const sched_t schedule[] = {
-    {&trojan, 100000, 0 },
-    {&spy, 100000, 1 },
+    { &trojan, 100000, 0 },
+    { &spy, 100000, 1 },
 };
 
 buffer_t buffers[0];

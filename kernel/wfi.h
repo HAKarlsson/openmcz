@@ -3,7 +3,7 @@
 
 static inline void wfi(void)
 {
-	__asm__ volatile("wfi");
+    __asm__ volatile("wfi");
 }
 
 #endif /* WFI_H */
